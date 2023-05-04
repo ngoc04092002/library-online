@@ -1,0 +1,89 @@
+.sidebar_dash {
+	box-shadow: 0 -3px 10px rgba(0, 0, 0, 0.06);
+	width: 18rem;
+	transition: width 0.25s linear;
+	overflow: hidden;
+	&.expanded {
+		width: 5rem;
+		@media screen and (max-width: 1023px) {
+			width: 0;
+		}
+	}
+	@media screen and (max-width: 1023px) {
+		padding-left: 0 !important;
+		padding-right: 0 !important;
+	}
+	.header_bar {
+		svg {
+			transition: transform width 250ms ease-in;
+			width: 20px;
+			transform: translateX(0);
+			&.run {
+				width: 11px;
+				transform: translateX(4px);
+			}
+		}
+	}
+
+	ul {
+		li {
+			overflow: hidden;
+			margin-bottom: 16px;
+			a {
+				padding: 0.5rem 1rem;
+				border-radius: 10px;
+				display: flex;
+				align-items: center;
+				&.active {
+					background: #f6f9fc;
+				}
+				span {
+					margin-right: 1rem;
+					svg {
+						width: 20px;
+						height: 20px;
+					}
+				}
+				.text {
+					width: 100%;
+					transition: width 0.25s linear;
+					&.unshow {
+						width: 0;
+					}
+				}
+				.arrow-expand {
+					margin: 0;
+					transform: rotate(0deg);
+					svg {
+						width: 16px;
+						height: 16px;
+					}
+					&.active {
+						transform: rotate(90deg);
+					}
+				}
+			}
+			.expand-info {
+				overflow: hidden;
+				li {
+					margin: 0;
+					padding: 1rem;
+					&:hover {
+						background-color: #f6f9fc99;
+					}
+					a {
+						padding: 0;
+					}
+				}
+			}
+		}
+	}
+	.siderbar_dash-container{
+		overflow-x: hidden;
+		overflow-y: scroll;
+		height: 80vh;
+		&::-webkit-scrollbar {
+			width: 0;
+		}
+	}
+}

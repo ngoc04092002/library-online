@@ -1,0 +1,11 @@
+.book_container {
+	input,
+	textarea {
+		box-shadow: none !important;
+		outline: none !important;
+		border: none !important;
+	}
+	input {
+		height: 36px;
+	}
+}
