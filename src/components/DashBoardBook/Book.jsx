@@ -17,7 +17,7 @@ const Book = () => {
 	const { id } = useParams();
 	const [avatar, setAvatar] = useState(initValueImg);
 	const [edit, setEdit] = useState(true);
-	const isEdit = Number.isInteger(+id) && edit;
+	const isEdit = Number.isInteger(+id);
 	const { data, isLoading } = useQuery({
 		queryKey: [`book/${id}`, id],
 		queryFn: () => getBookById(id),
@@ -56,7 +56,7 @@ const Book = () => {
 					<div className='w-[58%]'>
 						<div className='mb-6 flex justify-between'>
 							<TextField
-								disabled={isEdit}
+								disabled={isEdit && edit}
 								id='title'
 								label='Tiêu đề'
 								name='title'
@@ -65,7 +65,7 @@ const Book = () => {
 								className='mr-2 w-[45%]'
 							/>
 							<TextField
-								disabled={isEdit}
+								disabled={isEdit && edit}
 								id='author'
 								label='Tác giả'
 								name='author'
@@ -75,7 +75,7 @@ const Book = () => {
 							/>
 						</div>
 						<TextField
-							disabled={isEdit}
+							disabled={isEdit && edit}
 							id='des'
 							label='Mô tả về sách'
 							value={res?.des || ''}
@@ -85,7 +85,7 @@ const Book = () => {
 						/>
 						<div className='my-6 flex justify-between'>
 							<TextField
-								disabled={isEdit}
+								disabled={isEdit && edit}
 								id='releaseDate'
 								label='Ngày phát hàng'
 								value={res?.releaseDate || ''}
@@ -96,7 +96,7 @@ const Book = () => {
 								focused
 							/>
 							<TextField
-								disabled={isEdit}
+								disabled={isEdit && edit}
 								type='number'
 								value={res?.pages || ''}
 								id='pages'
@@ -106,7 +106,7 @@ const Book = () => {
 							/>
 						</div>
 						<TextField
-							disabled={isEdit}
+							disabled={isEdit && edit}
 							id='type'
 							select
 							label='Thể loại'
@@ -127,7 +127,7 @@ const Book = () => {
 					</div>
 					<div className='flex flex-col w-[38%] items-center'>
 						<Button
-							disabled={isEdit}
+							disabled={isEdit && edit}
 							variant='contained'
 							component='label'
 							className='w-fit mb-4'

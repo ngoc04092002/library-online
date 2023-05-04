@@ -11,9 +11,7 @@ import { getImage } from '@/utils/CustomImagePath';
 
 const menuNavBar = [
 	{ title: 'Tìm sách', to: 'search-book' },
-	{ title: 'Hỏi đáp', to: 'q-a' },
 	{ title: 'Xem sau', to: 'view-later' },
-	{ title: 'Dự án', to: 'project' },
 	{ title: 'Góp ý kiến', to: 'feedback' },
 ];
 
@@ -87,12 +85,6 @@ const Header = ({ handleActive }) => {
 							Đăng nhập
 						</Link>
 					)}
-					<Link
-						to='publish'
-						className='py-1 px-3 rounded hover:text-[#3dbfc9] font-medium border-solid border-[1px] border-[#01adba]'
-					>
-						Đăng tin
-					</Link>
 				</div>
 			</div>
 		</section>

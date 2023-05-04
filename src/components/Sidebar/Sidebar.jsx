@@ -12,7 +12,7 @@ import { getAuth, signOut } from 'firebase/auth';
 import React, { useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-import { BuildingIcon, CallIcon, HomeIcon, QAIcon, ZaloIcon } from '../../assets/icons';
+import { CallIcon, HomeIcon, ZaloIcon } from '../../assets/icons';
 
 import styles from './sidebar.module.scss';
 
@@ -51,16 +51,6 @@ const Sidebar = ({ active, handleActive, setActive }) => {
 			path: '/',
 			Icon: <HomeIcon />,
 			text: 'Tìm sách',
-		},
-		{
-			path: '/',
-			Icon: <QAIcon />,
-			text: 'Hỏi đáp',
-		},
-		{
-			path: '/',
-			Icon: <BuildingIcon />,
-			text: 'Dự án',
 		},
 		{
 			path: '/',
@@ -127,9 +117,9 @@ const Sidebar = ({ active, handleActive, setActive }) => {
 				</div>
 				<Link
 					className='block text-center bg-[#43d2dd36] mx-5 p-2 text-[#0299a5] font-semibold rounded-lg'
-					to='/'
+					to='/dash-board/admin/book/add-book'
 				>
-					Đăng tin
+					Đăng sách
 				</Link>
 				<div className='flex items-center justify-between px-4 mt-4 bg-[#f7f8f9] p-2 select-none'>
 					<div>
