@@ -10,7 +10,6 @@ import { AuthContext } from '@/context/AuthProvider';
 import { getImage } from '@/utils/CustomImagePath';
 
 const menuNavBar = [
-	{ title: 'Tìm sách', to: 'search-book' },
 	{ title: 'Xem sau', to: 'view-later' },
 	{ title: 'Góp ý kiến', to: 'feedback' },
 ];

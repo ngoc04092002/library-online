@@ -49,11 +49,6 @@ const Sidebar = ({ active, handleActive, setActive }) => {
 	const dataUtiliity = [
 		{
 			path: '/',
-			Icon: <HomeIcon />,
-			text: 'Tìm sách',
-		},
-		{
-			path: '/',
 			Icon: <DatabaseOutlined className={cx('building_icon')} />,
 			text: 'Xem sau',
 		},

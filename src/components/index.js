@@ -6,8 +6,10 @@ import EditProfile from './DashBoardComponents/Profile/EditProfile';
 import Book from './DashBoardBook';
 import TableBooks from './DashBoardComponents/TableBooks';
 import Books from './Books';
+import BookDetail from './BookDetail';
 
 export {
+	BookDetail,
 	Books,
 	TableBooks,
 	CalendarContainer,

@@ -14,6 +14,7 @@ import SignUp from './SignUp';
 
 import {
 	Book,
+	BookDetail,
 	CalendarContainer,
 	DashBoardMain,
 	EditPassword,
@@ -77,6 +78,10 @@ export const routes = createBrowserRouter([
 					{
 						path: '/',
 						element: <BookPage />,
+					},
+					{
+						path: 'book/:id?',
+						element: <BookDetail />,
 					},
 					{
 						path: 'feedback',
