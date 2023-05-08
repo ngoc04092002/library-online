@@ -8,6 +8,9 @@ import DialogBookOrder from '../DialogBookOrder';
 import BookReviewComment from '../BookReviewComment/BookReviewComment';
 import Comments from '../Comments';
 import DialogConfirm from '../DialogConfirm/DialogConfirm';
+import { useQuery } from '@tanstack/react-query';
+import { getBookById } from '@/infrastructure/dashboardActions';
+import Loading from '../Loading/Loading';
 
 const BookDetail = () => {
 	const { id } = useParams();
@@ -15,10 +18,46 @@ const BookDetail = () => {
 	const [orderValue, setOrderValue] = useState('');
 	const [open, setOpen] = useState(false);
 
-	console.log(id);
+	const { data, isLoading } = useQuery({
+		queryKey: [`book/${id}`, id],
+		queryFn: () => getBookById(id),
+		staleTime: 10 * 60 * 1000,
+		cacheTime: 20 * 60 * 1000,
+	});
+
+	if (isLoading) return <Loading />;
+	const res = data.data;
 
 	const handleOrder = () => {
-		console.log(id, orderValue);
+		const { id, title, author,src, releaseDate, pages, type,quantitySold } = res;
+		const orderData = {
+			id,
+			title,
+			src,
+			quantitySold,
+			author,
+			releaseDate: dayjs(releaseDate).format('DD-MM-YYYY'),
+			pages,
+			type,
+			order: orderValue,
+		};
+		const getorders = localStorage.getItem('orderBooks');
+		const orders = !!getorders ? JSON.parse(getorders) : [];
+		let have = false;
+		const newOrderDatas = orders.map((b) => {
+			if (b.id === id) {
+				const quantity = +b.order + +orderValue;
+				b.order = quantity;
+				have = true;
+				return b;
+			}
+			return b;
+		});
+		if (!have) {
+			newOrderDatas.push(orderData);
+		}
+
+		localStorage.setItem('orderBooks', JSON.stringify(newOrderDatas));
 		setOpen(false);
 		toggleBackDrop();
 		setOrderValue('');
@@ -43,65 +82,32 @@ const BookDetail = () => {
 					<ButtonWrapper onClick={toggleBackDrop}>Đặt sách</ButtonWrapper>
 				</div>
 				<div>
-					<h1 className='text-2xl font-bold mb-4'>
-						Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla, molestiae odit? Fuga
-						voluptas necessitatibus expedita corrupti. Labore nemo sed corrupti molestias, optio
-						saepe similique ullam dolores debitis adipisci architecto quia.
-					</h1>
+					<h1 className='text-2xl font-bold mb-4'>{res.title}</h1>
 					<ul>
 						<li>
-							author: <span>author</span>
+							author: <span>{res.author}</span>
 						</li>
 						<li>
-							type: <span>type</span>
+							type: <span>{res.type}</span>
 						</li>
 						<li>
-							pages: <span>3000</span>
+							pages: <span>{res.pages}</span>
 						</li>
 						<li>
-							quantity sold: <span>3000</span>
+							quantity sold: <span>{res.quantitySold}</span>
 						</li>
 						<li>
-							release date: <span>{dayjs().format('DD-MM-YYYY')}</span>
+							release date: <span>{dayjs(res.releaseDate).format('DD-MM-YYYY')}</span>
 						</li>
 					</ul>
 					<figure>
 						<img
-							src='https://99designs-blog.imgix.net/blog/wp-content/uploads/2017/07/attachment_78895234.png?auto=format&q=60&fit=max&w=930'
+							src={res.src}
 							alt=''
 							style={{ width: '100%', height: '600px' }}
 						/>
 					</figure>
-					<div className='mt-4'>
-						Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloribus exercitationem
-						incidunt debitis rerum, placeat deserunt soluta provident aspernatur dignissimos
-						quibusdam veniam itaque, reiciendis alias amet perferendis optio sit? Saepe, dicta. Nemo
-						ab inventore consectetur ut, nam dicta voluptate labore fuga dolor ipsa impedit
-						necessitatibus, vero, dignissimos dolorem maxime saepe quasi ipsum. Nemo quam tempore
-						laudantium corporis expedita eum cumque nesciunt! At laborum natus saepe asperiores amet
-						voluptatibus quaerat modi culpa libero enim nesciunt corrupti perspiciatis repellat,
-						voluptas excepturi sed, nihil delectus rerum sunt veniam atque. Cupiditate accusantium
-						sit veritatis officiis? Inventore ullam, ratione, repudiandae harum sapiente temporibus
-						dolores vel saepe dolorum suscipit, excepturi placeat impedit? Neque asperiores
-						recusandae officia nobis. Non ab officia dolorum facilis illo velit magni, a delectus.
-						Et illo fuga, doloremque consequuntur distinctio non consequatur nostrum eum ducimus
-						dolorum deleniti labore id voluptatibus tempora, accusamus hic numquam placeat illum.
-						Distinctio tempore voluptates voluptatum laboriosam temporibus placeat exercitationem!
-						Quasi optio sequi aspernatur alias excepturi porro nesciunt! Minus recusandae quam
-						libero nesciunt aliquid. Et pariatur doloribus omnis quos, sint nemo! Eius officia
-						repellendus voluptas tempora? Eum repellendus fugit quos. Itaque, quam, iure harum
-						incidunt maxime eos praesentium dolores cumque commodi vero, voluptatibus ut dicta ex
-						similique perferendis odit nesciunt. Iusto facilis quos sapiente velit! Sapiente iure
-						provident nisi nesciunt. Architecto maiores perferendis voluptates qui quia quos nemo
-						eveniet voluptatibus animi, repudiandae labore asperiores recusandae! Esse cumque
-						laboriosam inventore sunt autem! Tenetur, neque eligendi odit quidem molestiae nobis
-						blanditiis dolorem. Veritatis ducimus recusandae doloribus magni dignissimos animi
-						eveniet quisquam odit fugiat obcaecati eaque, impedit nihil est ullam. Ea sint nulla
-						vero sunt, molestiae maiores eius, aliquam aliquid, accusamus doloremque vel! Soluta cum
-						ullam vero laborum dolorem at ipsam error magni esse in quae, incidunt sint eum, fuga
-						obcaecati voluptate nobis nemo delectus laudantium numquam fugiat? Reiciendis ex ullam
-						modi amet?
-					</div>
+					<div className='mt-4'>{res.des}</div>
 				</div>
 				<Evaluate />
 				<BookReviewComment />

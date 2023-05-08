@@ -1,34 +1,15 @@
 import { BookOrders } from '@/components';
 import DialogConfirm from '@/components/DialogConfirm/DialogConfirm';
 import { Button } from '@mui/material';
-import dayjs from 'dayjs';
 import React, { useState } from 'react';
 
-const fakeDatas = [
-	{
-		id: 1,
-		title:
-			'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla, molestiae odit? Fugavoluptas necessitatibus expedita corrupti. Labore nemo sed corrupti molestias, optio saepeimilique ullam dolores debitis adipisci architecto quia.',
-		author: 'author',
-		releaseDate: dayjs().format('DD-MM-YYYY'),
-		pages: '3000',
-		type: 'horrified',
-		order: 3,
-	},
-	{
-		id: 2,
-		title:
-			'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla, molestiae odit? Fugavoluptas necessitatibus expedita corrupti. Labore nemo sed corrupti molestias, optio saepeimilique ullam dolores debitis adipisci architecto quia.',
-		author: 'author',
-		releaseDate: dayjs().format('DD-MM-YYYY'),
-		pages: '1000',
-		type: 'horrified',
-		order: 1,
-	},
-];
-
 const LaterView = () => {
-	const [datas, setDatas] = useState(fakeDatas);
+	const [datas, setDatas] = useState(() => {
+		const laterViewData = !!localStorage.getItem('orderBooks')
+			? JSON.parse(localStorage.getItem('orderBooks'))
+			: [];
+		return laterViewData;
+	});
 	const [open, setOpen] = useState(false);
 
 	const handleClose = () => {
@@ -39,6 +20,7 @@ const LaterView = () => {
 	};
 
 	const handleDeleteAll = () => {
+		localStorage.setItem('orderBooks', JSON.stringify([]));
 		setDatas([]);
 		setOpen(false);
 	};

@@ -32,7 +32,7 @@ const HeaderDetail = ({ handleUnShow }) => {
 				.then(() => {
 					setUser({});
 					localStorage.clear();
-					navigate('/');
+					navigate('/sign-in');
 				})
 				.catch((error) => {
 					getToast('Netword bad', 'error');

@@ -6,7 +6,7 @@ import DialogConfirm from '../DialogConfirm/DialogConfirm';
 const BookOrder = ({ book, resetData, books }) => {
 	const [orderValue, setOrderValue] = useState(0);
 	const [showBackDrop, setShowBackDrop] = useState(false);
-    const [open, setOpen] = useState(false);
+	const [open, setOpen] = useState(false);
 
 	if (!book) return;
 
@@ -14,11 +14,11 @@ const BookOrder = ({ book, resetData, books }) => {
 		setShowBackDrop(true);
 	};
 
-    const handleClose = () => {
+	const handleClose = () => {
 		setOpen(false);
 	};
 	const handleOpenConfirm = () => {
-        setShowBackDrop(false);
+		setShowBackDrop(false);
 		setOpen(true);
 	};
 
@@ -43,7 +43,8 @@ const BookOrder = ({ book, resetData, books }) => {
 		});
 		const omitNullData = newBookData.filter((b) => b !== null);
 
-        setOpen(false);
+		localStorage.setItem('orderBooks', JSON.stringify(omitNullData));
+		setOpen(false);
 		setShowBackDrop(false);
 		setOrderValue(0);
 		resetData(omitNullData);
@@ -57,7 +58,7 @@ const BookOrder = ({ book, resetData, books }) => {
 				>
 					<div className=''>
 						<img
-							src='https://99designs-blog.imgix.net/blog/wp-content/uploads/2017/07/attachment_78895234.png?auto=format&q=60&fit=max&w=930'
+							src={book.src}
 							alt=''
 							className='w-[500px] h-56'
 						/>
@@ -76,6 +77,9 @@ const BookOrder = ({ book, resetData, books }) => {
 							</li>
 							<li>
 								release date: <span>{book.releaseDate}</span>
+							</li>
+							<li>
+								quantity sold: <span>{book.quantitySold}</span>
 							</li>
 							<li>
 								order quantity: <span className='color-main'>{book.order}</span>
