@@ -27,7 +27,7 @@ export const StyledTableCell = styled(TableCell)(({ theme }) => ({
 export default function TableBooks() {
     const navigate = useNavigate();
 	const { data, isLoading } = useQuery({
-		queryKey: ['get-all-feedback'],
+		queryKey: ['books'],
 		queryFn: () => getAllBooks(),
 		staleTime: 10 * 60 * 1000,
 		cacheTime: 20 * 60 * 1000,
@@ -56,11 +56,11 @@ export default function TableBooks() {
 					<TableHead>
 						<TableRow>
 							<StyledTableCell>Tiêu đề</StyledTableCell>
-							<StyledTableCell align='right'>Tác giả</StyledTableCell>
-							<StyledTableCell align='right'>Thể loại</StyledTableCell>
-							<StyledTableCell align='right'>Ngày phát hàng</StyledTableCell>
-							<StyledTableCell align='right'>Số trang</StyledTableCell>
-							<StyledTableCell align='right'>Số lượng đã bán</StyledTableCell>
+							<StyledTableCell className='whitespace-nowrap' align='right'>Tác giả</StyledTableCell>
+							<StyledTableCell className='whitespace-nowrap' align='right'>Thể loại</StyledTableCell>
+							<StyledTableCell className='whitespace-nowrap' align='right'>Ngày phát hàng</StyledTableCell>
+							<StyledTableCell className='whitespace-nowrap' align='right'>Số trang</StyledTableCell>
+							<StyledTableCell className='whitespace-nowrap' align='right'>Số lượng đã bán</StyledTableCell>
 							<StyledTableCell align='center'>Hành động</StyledTableCell>
 						</TableRow>
 					</TableHead>

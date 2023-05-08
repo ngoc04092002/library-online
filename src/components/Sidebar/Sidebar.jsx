@@ -12,7 +12,7 @@ import { getAuth, signOut } from 'firebase/auth';
 import React, { useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-import { CallIcon, HomeIcon, ZaloIcon } from '../../assets/icons';
+import { CallIcon, ZaloIcon } from '../../assets/icons';
 
 import styles from './sidebar.module.scss';
 
@@ -48,15 +48,15 @@ const Sidebar = ({ active, handleActive, setActive }) => {
 
 	const dataUtiliity = [
 		{
-			path: '/',
+			path: '/view-later',
 			Icon: <DatabaseOutlined className={cx('building_icon')} />,
-			text: 'Xem sau',
+			text: 'Đơn đặt',
 		},
 	];
 
 	const dataManager = [
 		{
-			path: '/',
+			path: '/dash-board',
 			Icon: <HomeOutlined />,
 			text: 'Quản lý thông tin',
 		},

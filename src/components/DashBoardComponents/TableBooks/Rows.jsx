@@ -4,6 +4,10 @@ import { Link } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
 import { StyledTableCell } from './TableBooks';
 import DialogConfirm from '@/components/DialogConfirm/DialogConfirm';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { deleteBookById } from '@/infrastructure/dashboardActions';
+import { getToast } from '@/utils/CustomToast';
+import Loading from '@/components/Loading/Loading';
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
 	'&:nth-of-type(odd)': {
@@ -16,6 +20,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 const Rows = ({ row }) => {
+	const queryClient = useQueryClient();
 	const [open, setOpen] = useState(false);
 	const handleClose = () => {
 		setOpen(false);
@@ -24,8 +29,28 @@ const Rows = ({ row }) => {
 		setOpen(true);
 	};
 
+	const { mutate, isLoading } = useMutation({
+		mutationFn: (id) => {
+			const res = deleteBookById(id);
+			return res;
+		},
+	});
+
 	const handleDelete = () => {
-		console.log('deleted');
+		setOpen(false);
+		mutate(row.id, {
+			onError: (res) => {
+				getToast('', 'network bad');
+			},
+			onSuccess: (res) => {
+				if (res.data) {
+					getToast('Xóa thành công!', 'success');
+					queryClient.invalidateQueries({ queryKey: ['books'] });
+				} else {
+					getToast('Đã có lỗi!', 'error');
+				}
+			},
+		});
 	};
 	return (
 		<>
@@ -36,12 +61,40 @@ const Rows = ({ row }) => {
 				>
 					{row.title}
 				</StyledTableCell>
-				<StyledTableCell align='right'>{row.author}</StyledTableCell>
-				<StyledTableCell align='right'>{row.type}</StyledTableCell>
-				<StyledTableCell align='right'>{row.releaseDate}</StyledTableCell>
-				<StyledTableCell align='right'>{row.pages}</StyledTableCell>
-				<StyledTableCell align='right'>{row.quantitySold}</StyledTableCell>
-				<StyledTableCell align='center'>
+				<StyledTableCell
+					className='whitespace-nowrap'
+					align='right'
+				>
+					{row.author}
+				</StyledTableCell>
+				<StyledTableCell
+					className='whitespace-nowrap'
+					align='right'
+				>
+					{row.type}
+				</StyledTableCell>
+				<StyledTableCell
+					className='whitespace-nowrap'
+					align='right'
+				>
+					{row.releaseDate}
+				</StyledTableCell>
+				<StyledTableCell
+					className='whitespace-nowrap'
+					align='right'
+				>
+					{row.pages}
+				</StyledTableCell>
+				<StyledTableCell
+					className='whitespace-nowrap'
+					align='right'
+				>
+					{row.quantitySold}
+				</StyledTableCell>
+				<StyledTableCell
+					className='flex'
+					align='center'
+				>
 					<Link to={`/dash-board/admin/book/${row.id}`}>
 						<Button
 							variant='contained'
@@ -56,8 +109,9 @@ const Rows = ({ row }) => {
 						color='error'
 						className='bg-[#d32f2f]'
 						onClick={handleOpen}
+						disabled={isLoading}
 					>
-						Delete
+						{isLoading ? <Loading /> : 'Delete'}
 					</Button>
 				</StyledTableCell>
 			</StyledTableRow>

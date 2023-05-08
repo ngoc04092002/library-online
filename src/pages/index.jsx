@@ -72,24 +72,24 @@ export const routes = createBrowserRouter([
 				element: <ResetPassword />,
 			},
 			{
-				path: '/',
-				element: <Home />,
+				element: <ProtectedRoute />,
 				children: [
 					{
 						path: '/',
-						element: <BookPage />,
-					},
-					{
-						path: 'book/:id?',
-						element: <BookDetail />,
-					},
-					{
-						path: 'feedback',
-						element: <FeedBack />,
-					},
-					{
-						element: <ProtectedRoute />,
+						element: <Home />,
 						children: [
+							{
+								path: '/',
+								element: <BookPage />,
+							},
+							{
+								path: 'book/:id?',
+								element: <BookDetail />,
+							},
+							{
+								path: 'feedback',
+								element: <FeedBack />,
+							},
 							{
 								path: 'dash-board',
 								element: <DashBoard />,

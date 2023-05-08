@@ -27,3 +27,11 @@ export const getAllBooks = () => {
 export const getBookById=(id)=>{
 	return http.get(`book/${id}`);
 }
+
+export const deleteBookById=(id)=>{
+	return http.delete(`book/${id}`);
+}
+
+export const createBook=(requestBody)=>{
+	return http.post('add-book', requestBody);
+}
