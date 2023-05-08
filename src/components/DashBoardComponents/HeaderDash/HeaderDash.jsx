@@ -1,7 +1,7 @@
-import { ArrowUpOutlined, BellOutlined, SwitcherOutlined } from '@ant-design/icons';
+import { ArrowUpOutlined } from '@ant-design/icons';
 import classNames from 'classnames/bind';
 import React, { useContext } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 import styles from './header-dash.module.scss';
 
@@ -64,63 +64,6 @@ const HeaderDash = ({ classSvg, className, handleToggleShowSidebar }) => {
 							handleToggleShowSidebar={handleToggleShowSidebar}
 							className={className}
 						/>
-					</li>
-					<li className={`${cx('bell-icon')} relative`}>
-						<BellOutlined />
-						<div
-							className={`absolute z-10 top-[40px] md:right-0 rounded-lg ${cx('popup')} bg-white`}
-						>
-							<h6 className='text-md text-[#8898aa] p-4'>
-								Bạn có <strong className='text-[#11cdef]'>13</strong> thông báo.
-							</h6>
-							<div className={cx('popup-wrapper')}>
-								<Link
-									to='/dash-board'
-									className='flex items-center p-4 hover:bg-[#cccccc3b]'
-								>
-									<div className='px-2'>
-										<img
-											src={getImage('user.png')}
-											alt='user'
-											className='object-cover rounded-full object-center w-11 h-11 select-none'
-										/>
-									</div>
-									<div className='flex flex-col w-full justify-between'>
-										<ul className='flex items-center justify-between'>
-											<li className='font-semibold text-md'>Xem ngay</li>
-											<li className='text-[#8898aa] font-normal text-sm'>24 giờ trước</li>
-										</ul>
-										<p className='font-light text-[#525f7f]'>
-											Bạn Vương vừa bình luận bài đăng của bạn
-										</p>
-									</div>
-								</Link>
-								<Link
-									to='/dash-board'
-									className='flex items-center p-4 hover:bg-[#cccccc3b]'
-								>
-									<div className='px-2'>
-										<img
-											src={getImage('user.png')}
-											alt='user'
-											className='object-contain object-center w-11 h-11 select-none'
-										/>
-									</div>
-									<div className='flex flex-col w-full justify-between'>
-										<ul className='flex items-center justify-between'>
-											<li className='font-semibold text-md'>Xem ngay</li>
-											<li className='text-[#8898aa] font-normal text-sm'>24 giờ trước</li>
-										</ul>
-										<p className='font-light text-[#525f7f]'>
-											Bạn Vương vừa bình luận bài đăng của bạn
-										</p>
-									</div>
-								</Link>
-							</div>
-						</div>
-					</li>
-					<li>
-						<SwitcherOutlined />
 					</li>
 				</ul>
 				<div className='flex items-center ml-4'>

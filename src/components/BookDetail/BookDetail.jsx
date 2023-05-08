@@ -1,17 +1,40 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import ButtonWrapper from '../helpers/ButtonWrapper';
 import Evaluate from '../Evaluate';
 import { BackDropContext } from '@/pages/Home';
 import dayjs from 'dayjs';
-import BookOrder from '../BookOrder';
+import DialogBookOrder from '../DialogBookOrder';
 import BookReviewComment from '../BookReviewComment/BookReviewComment';
 import Comments from '../Comments';
+import DialogConfirm from '../DialogConfirm/DialogConfirm';
 
 const BookDetail = () => {
 	const { id } = useParams();
 	const { showBackDrop, toggleBackDrop } = useContext(BackDropContext);
+	const [orderValue, setOrderValue] = useState('');
+	const [open, setOpen] = useState(false);
+
 	console.log(id);
+
+	const handleOrder = () => {
+		console.log(id, orderValue);
+		setOpen(false);
+		toggleBackDrop();
+		setOrderValue('');
+	};
+
+	const changeOrder = (e) => {
+		setOrderValue(e.target.value);
+	};
+
+	const handleClose = () => {
+		setOpen(false);
+		toggleBackDrop();
+	};
+	const handleOpenConfirm = () => {
+		setOpen(true);
+	};
 
 	return (
 		<>
@@ -39,7 +62,7 @@ const BookDetail = () => {
 							quantity sold: <span>3000</span>
 						</li>
 						<li>
-							release date: <span>{dayjs().format('DD-MM-YY')}</span>
+							release date: <span>{dayjs().format('DD-MM-YYYY')}</span>
 						</li>
 					</ul>
 					<figure>
@@ -84,7 +107,18 @@ const BookDetail = () => {
 				<BookReviewComment />
 				<Comments />
 			</div>
-			{showBackDrop && <BookOrder />}
+			{showBackDrop && !open && (
+				<DialogBookOrder
+					handleClick={handleOpenConfirm}
+					value={orderValue}
+					handleChange={changeOrder}
+				/>
+			)}
+			<DialogConfirm
+				open={open}
+				handleClose={handleClose}
+				handleAccept={handleOrder}
+			/>
 		</>
 	);
 };

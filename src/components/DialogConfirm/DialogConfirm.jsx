@@ -11,15 +11,16 @@ export default function DialogConfirm({ open = false, handleAccept, handleClose 
 			onClose={handleClose}
 			aria-labelledby='alert-dialog-title'
 			aria-describedby='alert-dialog-description'
+			className='!z-[100000]'
 		>
-			<DialogTitle id='alert-dialog-title'>Bạn đã chắc chắn chưa?</DialogTitle>
+			<DialogTitle id='alert-dialog-title'>Are you sure?</DialogTitle>
 			<DialogActions>
-				<Button onClick={handleClose}>Hủy bỏ</Button>
+				<Button onClick={handleClose}>Cancel</Button>
 				<Button
 					onClick={handleAccept}
 					autoFocus
 				>
-					Xác nhận
+					Confirm
 				</Button>
 			</DialogActions>
 		</Dialog>
