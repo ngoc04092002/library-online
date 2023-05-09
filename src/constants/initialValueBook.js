@@ -22,3 +22,11 @@ export const initValue = {
 	type: '',
 	quantitySold: 0,
 };
+
+export const initValueBookDetail = {
+	quantity: 1,
+	name: '',
+	address: '',
+	tel: '',
+	status:true
+};

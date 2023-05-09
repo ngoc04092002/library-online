@@ -8,69 +8,72 @@ import DialogBookOrder from '../DialogBookOrder';
 import BookReviewComment from '../BookReviewComment/BookReviewComment';
 import Comments from '../Comments';
 import DialogConfirm from '../DialogConfirm/DialogConfirm';
-import { useQuery } from '@tanstack/react-query';
-import { getBookById } from '@/infrastructure/dashboardActions';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { createOrder, getBookById } from '@/infrastructure/dashboardActions';
 import Loading from '../Loading/Loading';
 import { getToast } from '@/utils/CustomToast';
+import { initValueBookDetail } from '@/constants/initialValueBook';
 
 const BookDetail = () => {
 	const { id } = useParams();
 	const { showBackDrop, toggleBackDrop } = useContext(BackDropContext);
-	const [orderValue, setOrderValue] = useState(1);
+	const [orderValue, setOrderValue] = useState(initValueBookDetail);
 	const [open, setOpen] = useState(false);
 
 	const { data, isLoading } = useQuery({
 		queryKey: [`book/${id}`, id],
 		queryFn: () => getBookById(id),
-		staleTime: 10 * 60 * 1000,
-		cacheTime: 20 * 60 * 1000,
+		staleTime: 2 * 60 * 1000,
+		cacheTime: 5 * 60 * 1000,
+	});
+
+	const { mutate, isLoading: loadingOrder } = useMutation({
+		mutationFn: (data) => {
+			const res = createOrder(data);
+			return res;
+		},
 	});
 
 	if (isLoading) return <Loading />;
 	const res = data.data;
 
 	const handleOrder = () => {
-		const { id,des, title, author,src, releaseDate, pages, type,quantitySold } = res;
-		const orderData = {
-			id,
-			title,
-			des,
-			src,
-			quantitySold,
-			author,
-			releaseDate: dayjs(releaseDate).format('YYYY-MM-DD'),
-			pages,
-			type,
-			order: orderValue,
-		};
-		const getorders = localStorage.getItem('orderBooks');
-		const orders = !!getorders ? JSON.parse(getorders) : [];
-		let have = false;
-		const newOrderDatas = orders.map((b) => {
-			if (b.id === id) {
-				const quantity = +b.order + +orderValue;
-				b.order = quantity;
-				have = true;
-				return b;
-			}
-			return b;
-		});
-		if (!have) {
-			newOrderDatas.push(orderData);
+		if (orderValue.quantity <= 0) {
+			alert('quantity must be greater than 0');
+			return;
 		}
-
-		localStorage.setItem('orderBooks', JSON.stringify(newOrderDatas));
+		orderValue.books = res;
 		setOpen(false);
 		toggleBackDrop();
-		setOrderValue('');
-		getToast('order success', 'success');
+		mutate(orderValue, {
+			onError: (res) => {
+				if (typeof res.response?.data === 'string') {
+					getToast(res.response?.data, 'error');
+				}
+				getToast('', 'network bad');
+			},
+			onSuccess: (r) => {
+				if (!r.data) {
+					getToast('Please again', 'error');
+					return;
+				}
+				const localNames = localStorage.getItem('name')
+					? JSON.parse(localStorage.getItem('name'))
+					: [];
+				localNames.push(orderValue.name);
+				const names = new Set(localNames);
+				localStorage.setItem('name', JSON.stringify(Array.from(names)));
+				setOrderValue(initValueBookDetail);
+				getToast('order success', 'success');
+			},
+		});
 	};
 
 	const changeOrder = (e) => {
-		const amountOrder = e.target.value;
-		if(amountOrder>0){
-			setOrderValue(e.target.value);
-		}
+		setOrderValue((prev) => ({
+			...prev,
+			[e.target.name]: e.target.value.trim(),
+		}));
 	};
 
 	const handleClose = () => {
@@ -78,6 +81,10 @@ const BookDetail = () => {
 		toggleBackDrop();
 	};
 	const handleOpenConfirm = () => {
+		if (Object.values(orderValue).includes('')) {
+			alert('Please enter in full');
+			return;
+		}
 		setOpen(true);
 	};
 
@@ -85,7 +92,12 @@ const BookDetail = () => {
 		<>
 			<div className='py-12 px-12'>
 				<div className='w-full text-end'>
-					<ButtonWrapper onClick={toggleBackDrop}>Đặt sách</ButtonWrapper>
+					<ButtonWrapper
+						isLoading={loadingOrder}
+						onClick={toggleBackDrop}
+					>
+						Order Book
+					</ButtonWrapper>
 				</div>
 				<div>
 					<h1 className='text-2xl font-bold mb-4'>{res.title}</h1>

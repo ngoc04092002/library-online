@@ -3,6 +3,25 @@ import ButtonWrapper from '../helpers/ButtonWrapper/ButtonWrapper';
 import { CloseOutlined } from '@ant-design/icons';
 import { BackDropContext } from '@/pages/Home';
 
+const listField = [
+	{
+		label: 'quantity',
+		placeholder: 'enter quantity',
+	},
+	{
+		label: 'name',
+		placeholder: 'enter name',
+	},
+	{
+		label: 'address',
+		placeholder: 'enter address',
+	},
+	{
+		label: 'tel',
+		placeholder: 'enter tel',
+	},
+];
+
 const DialogBookOrder = ({ text = 'Order', handleClick, value, handleChange, handleBackDrop }) => {
 	const { toggleBackDrop } = useContext(BackDropContext);
 	return (
@@ -18,14 +37,30 @@ const DialogBookOrder = ({ text = 'Order', handleClick, value, handleChange, han
 			</ul>
 			<div className='mb-3'>
 				{' '}
-				<input
-					onChange={handleChange}
-					value={value}
-					type='number'
-					name='quantity'
-					placeholder='enter quantity'
-					className='w-full border border-solid border-[#ccc]'
-				/>
+				{text === 'Order' ? (
+					listField.map((f, index) => {
+						return (
+							<input
+								key={index}
+								onChange={handleChange}
+								value={value[f.label]}
+								type={index === 0 ? 'number' : 'text'}
+								name={f.label}
+								placeholder={f.placeholder}
+								className='w-full mb-2 border border-solid border-[#ccc]'
+							/>
+						);
+					})
+				) : (
+					<input
+						onChange={handleChange}
+						value={value}
+						type='number'
+						name='quantity'
+						placeholder='enter quantity'
+						className='w-full border border-solid border-[#ccc]'
+					/>
+				)}
 			</div>
 			<ButtonWrapper
 				onClick={handleClick}

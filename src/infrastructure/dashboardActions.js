@@ -40,12 +40,26 @@ export const updateBook = (requestBody) => {
 	return http.post('update-book', requestBody);
 };
 
-export const updateBookQuantitySold = (requestBody) => {
-	return http.put('update-quantity', requestBody);
+export const filterBook = (params) => {
+	return http.get('filter-book', { params });
 };
 
-export const filterBook = (params)=>{
-	return http.get('filter-book', {params});
-}
+export const getOrders = () => {
+	return http.get('orders');
+};
 
+export const getOrdersByName = (params) => {
+	return http.get(`orders-name`, { params });
+};
 
+export const createOrder = (requestBody) => {
+	return http.post('add-order', requestBody);
+};
+
+export const updateOrder = (params) => {
+	return http.put(`update-order?id=${params.id}&quantity=${params.quantity}`);
+};
+
+export const deleteOrdersByName = (name) => {
+	return http.post(`delete-order`, name);
+};

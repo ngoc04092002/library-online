@@ -1,14 +1,26 @@
 import { Button } from '@mui/material';
-import React, { memo, useState } from 'react';
+import React, { useState } from 'react';
 import DialogBookOrder from '../DialogBookOrder/DialogBookOrder';
 import DialogConfirm from '../DialogConfirm/DialogConfirm';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { updateOrder } from '@/infrastructure/dashboardActions';
+import Loading from '../Loading';
+import { getToast } from '@/utils/CustomToast';
 
-const BookOrder = ({ book, resetData, books }) => {
-	const [orderValue, setOrderValue] = useState(0);
+const BookOrder = ({ data }) => {
+	const queryClient = useQueryClient();
+	const [orderValue, setOrderValue] = useState(1);
 	const [showBackDrop, setShowBackDrop] = useState(false);
 	const [open, setOpen] = useState(false);
+	const { mutate, isLoading } = useMutation({
+		mutationFn: (data) => {
+			const res = updateOrder(data);
+			return res;
+		},
+	});
 
-	if (!book) return;
+	if (!data) return;
+	const { books: book, quantity, id } = data;
 
 	const handleOpen = () => {
 		setShowBackDrop(true);
@@ -23,48 +35,47 @@ const BookOrder = ({ book, resetData, books }) => {
 	};
 
 	const changeOrder = (e) => {
-		if (+e.target.value <= book.order) {
+		if (+e.target.value <= quantity) {
 			setOrderValue(e.target.value);
 		}
 	};
 
 	const handleDelete = () => {
-		const newBookData = books.map((b) => {
-			if (b.id === book.id) {
-				const quantity = +b.order - +orderValue;
-				if (quantity === 0) {
-					return null;
-				} else {
-					b.order = quantity;
-					return b;
-				}
-			}
-			return b;
-		});
-		const omitNullData = newBookData.filter((b) => b !== null);
-
-		localStorage.setItem('orderBooks', JSON.stringify(omitNullData));
 		setOpen(false);
 		setShowBackDrop(false);
-		setOrderValue(0);
-		resetData(omitNullData);
+		mutate(
+			{ id, quantity: +orderValue },
+			{
+				onError: (res) => {
+					if (typeof res.response?.data === 'string') {
+						getToast(res.response?.data, 'error');
+					}
+					getToast('', 'network bad');
+				},
+				onSuccess: (r) => {
+					setOrderValue(0);
+					queryClient.invalidateQueries({ queryKey: [`orders-name`] });
+					getToast('order success', 'success');
+				},
+			},
+		);
 	};
 	return (
 		<>
-			<div className='flex items-center rounded-md overflow-hidden justify-between shadow-006 p-3 mb-4'>
+			<div className='flex sm:flex-row flex-col items-center rounded-md overflow-hidden justify-between shadow-006 p-3 mb-4'>
 				<a
 					href={`/book/${book.id}`}
-					className='flex items-center'
+					className='flex items-center w-full'
 				>
-					<div className=''>
+					<div className='sm:w-[300px] w-1/2'>
 						<img
 							src={book.src}
 							alt=''
-							className='w-[500px] h-56'
+							className='w-full h-56'
 						/>
 					</div>
-					<div className='px-4'>
-						<h1 className='text-lg font-bold mb-4'>{book.title}</h1>
+					<div className='px-4 sm:w-[67%] w-1/2'>
+						<h1 className='text-lg font-bold mb-4 break-all'>{book.title}</h1>
 						<ul>
 							<li>
 								author: <span>{book.author}</span>
@@ -82,21 +93,20 @@ const BookOrder = ({ book, resetData, books }) => {
 								quantity sold: <span>{book.quantitySold}</span>
 							</li>
 							<li>
-								order quantity: <span className='color-main'>{book.order}</span>
+								order quantity: <span className='color-main'>{quantity}</span>
 							</li>
 						</ul>
 					</div>
 				</a>
-				<div>
-					<Button
-						variant='contained'
-						color='primary'
-						className='mr-2 bg-[#1976d2]'
-						onClick={handleOpen}
-					>
-						Delete
-					</Button>
-				</div>
+				<Button
+					variant='contained'
+					color='primary'
+					className='mr-2 sm:!mt-0 !mt-4 sm:!w-fit !w-full bg-[#1976d2]'
+					onClick={handleOpen}
+					disabled={isLoading}
+				>
+					{isLoading ? <Loading /> : 'Delete'}
+				</Button>
 			</div>
 			{showBackDrop && (
 				<div className='inset-0 absolute bg-backdrop'>
@@ -119,4 +129,4 @@ const BookOrder = ({ book, resetData, books }) => {
 	);
 };
 
-export default memo(BookOrder);
+export default BookOrder;
