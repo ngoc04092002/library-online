@@ -4,30 +4,19 @@ import { useParams } from 'react-router-dom';
 import { v4 } from 'uuid';
 
 import './book.scss';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import Loading from '../Loading';
-import { createBook, getBookById } from '@/infrastructure/dashboardActions';
+import { createBook, getBookById, updateBook } from '@/infrastructure/dashboardActions';
 import DialogConfirm from '../DialogConfirm';
-import { deleteObject, getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { storage } from '@/pages/firebase';
 import { getToast } from '@/utils/CustomToast';
-
-const currencies = ['A', 'B', 'C', 'D'];
-const initValueImg = {
-	url: '',
-	file: null,
-};
-const initValue = {
-	title: '',
-	author: '',
-	des: '',
-	releaseDate: '',
-	pages: '',
-	type: '',
-	quantitySold: 0,
-};
+import { currencies, initValue, initValueImg } from '@/constants/initialValueBook';
+import { validateFromBook } from '@/utils/ValidateForm';
+import { deleteFirebaseImgPath } from '@/utils/DeleteFirebaseImgPath';
 
 const Book = () => {
+	const queryClient = useQueryClient();
 	const { id } = useParams();
 	const isEdit = Number.isInteger(+id);
 
@@ -39,8 +28,6 @@ const Book = () => {
 	const { data, isLoading } = useQuery({
 		queryKey: [`book/${id}`, id],
 		queryFn: () => getBookById(id),
-		staleTime: 10 * 60 * 1000,
-		cacheTime: 20 * 60 * 1000,
 		enabled: isEdit,
 	});
 
@@ -52,24 +39,6 @@ const Book = () => {
 		const file = URL.createObjectURL(e.target.files[0]);
 		setAvatar({ url: file, file: e.target.files[0] });
 	};
-	const handleClickEdit = (e) => {
-		e.preventDefault();
-		if (isEdit) {
-			setEdit(false);
-		} else {
-			var currentDate = new Date();
-			var selectedDate = new Date(value.releaseDate);
-			if (![avatar.url, value.title, value.author, value.releaseDate].includes('')) {
-				if (currentDate < selectedDate) {
-					alert('Thời gian đã vượt qua thời điểm hiện tại');
-				} else {
-					setOpen(true);
-				}
-			} else {
-				alert('Yêu cầu điền đầy đủ');
-			}
-		}
-	};
 
 	const handleClose = () => {
 		setOpen(false);
@@ -77,21 +46,33 @@ const Book = () => {
 
 	const { mutate, isLoading: loadingEdit } = useMutation({
 		mutationFn: (data) => {
-			const res = createBook(data);
+			const res = isEdit ? updateBook(data) : createBook(data);
 			return res;
 		},
 	});
 
-	const handleAdd = () => {
+	const handleSubmit = () => {
 		setOpen(false);
-		const formData = value;
+		const formData = {
+			title: value.title || res?.title,
+			author: value.author || res?.author,
+			des: value.des || res?.des,
+			releaseDate: value.releaseDate || res?.releaseDate,
+			pages: value.pages || res?.pages,
+			type: value.type || res?.type,
+			quantitySold: 0,
+		};
+		if (isEdit) {
+			formData.id = res?.id;
+		}
 
 		const imageRef = ref(storage, `/images/${avatar.file?.name + v4()}`);
 		uploadBytes(imageRef, avatar.file)
 			.then((d) => {
 				getDownloadURL(d.ref)
 					.then((url) => {
-						formData.src = url;
+						formData.src = avatar.file ? url : res?.src;
+						console.log(formData);
 						mutate(formData, {
 							onError: (res) => {
 								if (typeof res.response?.data === 'string') {
@@ -99,20 +80,26 @@ const Book = () => {
 								}
 								getToast('', 'network bad');
 							},
-							onSuccess: (res) => {
-								if (res.data === 'ok') {
-									getToast('create successfully', 'success');
-									setValue(initValue);
-									setAvatar(initValueImg);
+							onSuccess: (r) => {
+								if (r.data === 'ok') {
+									if (isEdit) {
+										// Delete the old file
+										if (!avatar.file) {
+											deleteFirebaseImgPath(url);
+										} else {
+											deleteFirebaseImgPath(res?.src);
+										}
+									}
+									getToast(`${isEdit ? 'update' : 'create'} successfully`, 'success');
+									if(!isEdit){
+										setValue(initValue);
+										setAvatar(initValueImg);
+									}
+									queryClient.invalidateQueries({ queryKey: ['books'] });
 								} else {
 									// Delete the old file
-									let ibe = url.indexOf('%2F');
-									let ila = url.indexOf('?');
-									let res = url.slice(ibe + 3, ila);
-									const desertRef = ref(storage, `images/${res}`);
-									deleteObject(desertRef);
-									
-									getToast(res.data, 'warn');
+									deleteFirebaseImgPath(url);
+									getToast(r.data, 'warn');
 								}
 							},
 						});
@@ -142,6 +129,26 @@ const Book = () => {
 	if (isLoading && isEdit) return <Loading />;
 	const res = data?.data;
 
+	const handleClickEdit = (e) => {
+		e.preventDefault();
+		if (isEdit) {
+			if (edit) setEdit(false);
+			if (!edit) {
+				validateFromBook(
+					value.releaseDate || res.releaseDate,
+					value.author || res.author,
+					value.title || res.title,
+					avatar.url || res.src,
+					() => setOpen(true),
+				);
+			}
+		} else {
+			validateFromBook(value.releaseDate, value.author, value.title, avatar.url, () =>
+				setOpen(true),
+			);
+		}
+	};
+
 	return (
 		<>
 			<div className='book_container w-full bg-white p-2 pb-12 mb-12'>
@@ -155,7 +162,7 @@ const Book = () => {
 									id='title'
 									label='Tiêu đề'
 									name='title'
-									value={isEdit ? res?.title : value.title}
+									value={value.title || (res ? res?.title : '')}
 									onChange={handleChangeValue}
 									required
 									className='mr-2 w-[45%]'
@@ -166,7 +173,7 @@ const Book = () => {
 									label='Tác giả'
 									name='author'
 									onChange={handleChangeValue}
-									value={isEdit ? res?.author : value.author}
+									value={value.author || (res ? res?.author : '')}
 									required
 									className='w-[45%]'
 								/>
@@ -176,7 +183,7 @@ const Book = () => {
 								id='des'
 								required
 								label='Mô tả về sách'
-								value={isEdit ? res?.des : value.des}
+								value={value.des || (res ? res?.des : '')}
 								name='des'
 								onChange={handleChangeValue}
 								multiline
@@ -187,7 +194,7 @@ const Book = () => {
 									disabled={isEdit && edit}
 									id='releaseDate'
 									label='Ngày phát hàng'
-									value={isEdit ? res?.releaseDate : value.releaseDate}
+									value={value.releaseDate || (res ? res?.releaseDate : '')}
 									name='releaseDate'
 									required
 									onChange={handleChangeValue}
@@ -198,7 +205,7 @@ const Book = () => {
 								<TextField
 									disabled={isEdit && edit}
 									type='number'
-									value={isEdit ? res?.pages : value.pages}
+									value={value.pages || (res ? res?.pages : '')}
 									id='pages'
 									onChange={handleChangeValue}
 									label='Số trang'
@@ -214,7 +221,7 @@ const Book = () => {
 								label='Thể loại'
 								name='type'
 								onChange={handleChangeValue}
-								value={isEdit ? res?.type : value.type}
+								value={value.type || (res ? res?.type : '')}
 								className='w-1/2'
 								defaultValue=''
 							>
@@ -245,9 +252,9 @@ const Book = () => {
 									onChange={handlePreviewAvatar}
 								/>
 							</Button>
-							{avatar.url && (
+							{(avatar.url || res?.src) && (
 								<img
-									src={avatar.url}
+									src={avatar.url || res?.src}
 									alt=''
 									className='w-full h-[300px]'
 								/>
@@ -268,7 +275,7 @@ const Book = () => {
 			<DialogConfirm
 				open={open}
 				handleClose={handleClose}
-				handleAccept={handleAdd}
+				handleAccept={handleSubmit}
 			/>
 		</>
 	);

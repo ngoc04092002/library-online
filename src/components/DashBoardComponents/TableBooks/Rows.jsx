@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Button, TableRow } from '@mui/material';
-import { Link } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
 import { StyledTableCell } from './TableBooks';
 import DialogConfirm from '@/components/DialogConfirm/DialogConfirm';
@@ -8,6 +7,8 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { deleteBookById } from '@/infrastructure/dashboardActions';
 import { getToast } from '@/utils/CustomToast';
 import Loading from '@/components/Loading/Loading';
+import { deleteObject, ref } from 'firebase/storage';
+import { storage } from '@/pages/firebase';
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
 	'&:nth-of-type(odd)': {
@@ -44,6 +45,11 @@ const Rows = ({ row }) => {
 			},
 			onSuccess: (res) => {
 				if (res.data) {
+					let ibe = row.src.indexOf('%2F');
+					let ila = row.src.indexOf('?');
+					let res = row.src.slice(ibe + 3, ila);
+					const desertRef = ref(storage, `images/${res}`);
+					deleteObject(desertRef);
 					getToast('Xóa thành công!', 'success');
 					queryClient.invalidateQueries({ queryKey: ['books'] });
 				} else {
@@ -95,7 +101,7 @@ const Rows = ({ row }) => {
 					className='flex'
 					align='center'
 				>
-					<Link to={`/dash-board/admin/book/${row.id}`}>
+					<a href={`/dash-board/admin/book/${row.id}`}>
 						<Button
 							variant='contained'
 							color='primary'
@@ -103,7 +109,7 @@ const Rows = ({ row }) => {
 						>
 							View
 						</Button>
-					</Link>
+					</a>
 					<Button
 						variant='contained'
 						color='error'

@@ -25,25 +25,23 @@ export const StyledTableCell = styled(TableCell)(({ theme }) => ({
 }));
 
 export default function TableBooks() {
-    const navigate = useNavigate();
+	const navigate = useNavigate();
 	const { data, isLoading } = useQuery({
 		queryKey: ['books'],
 		queryFn: () => getAllBooks(),
-		staleTime: 10 * 60 * 1000,
-		cacheTime: 20 * 60 * 1000,
 	});
 	if (isLoading) return <Loading />;
 	const res = data?.data;
 
-    const clickAddBook = ()=>{
-        navigate('/dash-board/admin/book/add-book');
-    }
+	const clickAddBook = () => {
+		navigate('/dash-board/admin/book/add-book');
+	};
 	return (
 		<section className='bg-white w-full p-2'>
 			<Button
 				variant='contained'
 				color='primary'
-                className='bg-[#1976d2] mb-4'
+				className='bg-[#1976d2] mb-4'
 				onClick={clickAddBook}
 			>
 				Add book
@@ -56,11 +54,36 @@ export default function TableBooks() {
 					<TableHead>
 						<TableRow>
 							<StyledTableCell>Tiêu đề</StyledTableCell>
-							<StyledTableCell className='whitespace-nowrap' align='right'>Tác giả</StyledTableCell>
-							<StyledTableCell className='whitespace-nowrap' align='right'>Thể loại</StyledTableCell>
-							<StyledTableCell className='whitespace-nowrap' align='right'>Ngày phát hàng</StyledTableCell>
-							<StyledTableCell className='whitespace-nowrap' align='right'>Số trang</StyledTableCell>
-							<StyledTableCell className='whitespace-nowrap' align='right'>Số lượng đã bán</StyledTableCell>
+							<StyledTableCell
+								className='whitespace-nowrap'
+								align='right'
+							>
+								Tác giả
+							</StyledTableCell>
+							<StyledTableCell
+								className='whitespace-nowrap'
+								align='right'
+							>
+								Thể loại
+							</StyledTableCell>
+							<StyledTableCell
+								className='whitespace-nowrap'
+								align='right'
+							>
+								Ngày phát hàng
+							</StyledTableCell>
+							<StyledTableCell
+								className='whitespace-nowrap'
+								align='right'
+							>
+								Số trang
+							</StyledTableCell>
+							<StyledTableCell
+								className='whitespace-nowrap'
+								align='right'
+							>
+								Số lượng đã bán
+							</StyledTableCell>
 							<StyledTableCell align='center'>Hành động</StyledTableCell>
 						</TableRow>
 					</TableHead>

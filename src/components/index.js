@@ -8,8 +8,10 @@ import TableBooks from './DashBoardComponents/TableBooks';
 import Books from './Books';
 import BookDetail from './BookDetail';
 import BookOrders from './BookOrders';
+import Pagination from './Pagination';
 
 export {
+	Pagination,
 	BookOrders,
 	BookDetail,
 	Books,

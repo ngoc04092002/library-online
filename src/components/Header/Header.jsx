@@ -47,7 +47,7 @@ const Header = ({ handleActive }) => {
 					onClick={handleActive}
 					className='cus-screen:hidden block text-xl cursor-pointer'
 				/>
-				<div className='navbar-menu flex-1 d-rtl cus-screen:flex hidden'>
+				<div className='navbar-menu d-rtl cus-screen:flex hidden'>
 					{menuNavBar.map((d) => (
 						<Link
 							key={d.to}

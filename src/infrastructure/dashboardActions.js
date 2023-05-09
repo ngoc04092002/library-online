@@ -24,14 +24,28 @@ export const getAllBooks = () => {
 	return http.get('books');
 };
 
-export const getBookById=(id)=>{
+export const getBookById = (id) => {
 	return http.get(`book/${id}`);
-}
+};
 
-export const deleteBookById=(id)=>{
+export const deleteBookById = (id) => {
 	return http.delete(`book/${id}`);
+};
+
+export const createBook = (requestBody) => {
+	return http.post('add-book', requestBody);
+};
+
+export const updateBook = (requestBody) => {
+	return http.post('update-book', requestBody);
+};
+
+export const updateBookQuantitySold = (requestBody) => {
+	return http.put('update-quantity', requestBody);
+};
+
+export const filterBook = (params)=>{
+	return http.get('filter-book', {params});
 }
 
-export const createBook=(requestBody)=>{
-	return http.post('add-book', requestBody);
-}
+

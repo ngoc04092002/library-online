@@ -1,5 +1,6 @@
 import { BookOrders } from '@/components';
-import DialogConfirm from '@/components/DialogConfirm/DialogConfirm';
+import ActionOrder from '@/components/BookOrders/ActionOrder';
+import DialogConfirm from '@/components/DialogConfirm';
 import { Button } from '@mui/material';
 import React, { useState } from 'react';
 
@@ -53,6 +54,7 @@ const LaterView = () => {
 						setDatas={setDatas}
 					/>
 				</div>
+				{datas && !!datas.length && <ActionOrder setDatas={setDatas} />}
 			</div>
 			<DialogConfirm
 				open={open}

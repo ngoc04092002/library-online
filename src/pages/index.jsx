@@ -73,28 +73,28 @@ export const routes = createBrowserRouter([
 				element: <ResetPassword />,
 			},
 			{
-				element: <ProtectedRoute />,
+				path: '/',
+				element: <Home />,
 				children: [
 					{
 						path: '/',
-						element: <Home />,
+						element: <BookPage />,
+					},
+					{
+						path: 'view-later',
+						element: <LaterView />,
+					},
+					{
+						path: 'book/:id?',
+						element: <BookDetail />,
+					},
+					{
+						path: 'feedback',
+						element: <FeedBack />,
+					},
+					{
+						element: <ProtectedRoute />,
 						children: [
-							{
-								path: '/',
-								element: <BookPage />,
-							},
-							{
-								path: 'view-later',
-								element: <LaterView />,
-							},
-							{
-								path: 'book/:id?',
-								element: <BookDetail />,
-							},
-							{
-								path: 'feedback',
-								element: <FeedBack />,
-							},
 							{
 								path: 'dash-board',
 								element: <DashBoard />,

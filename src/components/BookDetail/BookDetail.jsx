@@ -11,11 +11,12 @@ import DialogConfirm from '../DialogConfirm/DialogConfirm';
 import { useQuery } from '@tanstack/react-query';
 import { getBookById } from '@/infrastructure/dashboardActions';
 import Loading from '../Loading/Loading';
+import { getToast } from '@/utils/CustomToast';
 
 const BookDetail = () => {
 	const { id } = useParams();
 	const { showBackDrop, toggleBackDrop } = useContext(BackDropContext);
-	const [orderValue, setOrderValue] = useState('');
+	const [orderValue, setOrderValue] = useState(1);
 	const [open, setOpen] = useState(false);
 
 	const { data, isLoading } = useQuery({
@@ -29,14 +30,15 @@ const BookDetail = () => {
 	const res = data.data;
 
 	const handleOrder = () => {
-		const { id, title, author,src, releaseDate, pages, type,quantitySold } = res;
+		const { id,des, title, author,src, releaseDate, pages, type,quantitySold } = res;
 		const orderData = {
 			id,
 			title,
+			des,
 			src,
 			quantitySold,
 			author,
-			releaseDate: dayjs(releaseDate).format('DD-MM-YYYY'),
+			releaseDate: dayjs(releaseDate).format('YYYY-MM-DD'),
 			pages,
 			type,
 			order: orderValue,
@@ -61,10 +63,14 @@ const BookDetail = () => {
 		setOpen(false);
 		toggleBackDrop();
 		setOrderValue('');
+		getToast('order success', 'success');
 	};
 
 	const changeOrder = (e) => {
-		setOrderValue(e.target.value);
+		const amountOrder = e.target.value;
+		if(amountOrder>0){
+			setOrderValue(e.target.value);
+		}
 	};
 
 	const handleClose = () => {
