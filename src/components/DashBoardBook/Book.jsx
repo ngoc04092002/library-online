@@ -11,7 +11,7 @@ import DialogConfirm from '../DialogConfirm';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { storage } from '@/pages/firebase';
 import { getToast } from '@/utils/CustomToast';
-import { currencies, initValue, initValueImg } from '@/constants/initialValueBook';
+import { types, initValue, initValueImg } from '@/constants/initialValueBook';
 import { validateFromBook } from '@/utils/ValidateForm';
 import { deleteFirebaseImgPath } from '@/utils/DeleteFirebaseImgPath';
 
@@ -225,7 +225,7 @@ const Book = () => {
 								className='w-1/2'
 								defaultValue=''
 							>
-								{currencies.map((option) => (
+								{types.map((option) => (
 									<MenuItem
 										key={option}
 										value={res?.type || option}

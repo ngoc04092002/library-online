@@ -26,6 +26,12 @@ const BookOrder = ({ data }) => {
 		setShowBackDrop(true);
 	};
 
+	if (open || showBackDrop) {
+		document.body.style.overflowY = 'hidden';
+	} else {
+		document.body.style.overflowY = 'overlay';
+	}
+
 	const handleClose = () => {
 		setOpen(false);
 	};

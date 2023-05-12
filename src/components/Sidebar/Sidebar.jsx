@@ -50,7 +50,7 @@ const Sidebar = ({ active, handleActive, setActive }) => {
 		{
 			path: '/view-later',
 			Icon: <DatabaseOutlined className={cx('building_icon')} />,
-			text: 'Đơn đặt',
+			text: 'Later view',
 		},
 	];
 

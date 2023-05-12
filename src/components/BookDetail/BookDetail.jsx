@@ -1,11 +1,9 @@
 import React, { useContext, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import ButtonWrapper from '../helpers/ButtonWrapper';
-import Evaluate from '../Evaluate';
 import { BackDropContext } from '@/pages/Home';
 import dayjs from 'dayjs';
 import DialogBookOrder from '../DialogBookOrder';
-import BookReviewComment from '../BookReviewComment/BookReviewComment';
 import Comments from '../Comments';
 import DialogConfirm from '../DialogConfirm/DialogConfirm';
 import { useMutation, useQuery } from '@tanstack/react-query';
@@ -13,18 +11,20 @@ import { createOrder, getBookById } from '@/infrastructure/dashboardActions';
 import Loading from '../Loading/Loading';
 import { getToast } from '@/utils/CustomToast';
 import { initValueBookDetail } from '@/constants/initialValueBook';
+import Evaluate from '../helpers/Evaluate';
 
 const BookDetail = () => {
 	const { id } = useParams();
 	const { showBackDrop, toggleBackDrop } = useContext(BackDropContext);
 	const [orderValue, setOrderValue] = useState(initValueBookDetail);
 	const [open, setOpen] = useState(false);
+	const [selectStar, setSelectStar] = useState(0);
 
 	const { data, isLoading } = useQuery({
 		queryKey: [`book/${id}`, id],
 		queryFn: () => getBookById(id),
-		staleTime: 2 * 60 * 1000,
-		cacheTime: 5 * 60 * 1000,
+		staleTime: 60 * 1000,
+		cacheTime: 2 * 60 * 1000,
 	});
 
 	const { mutate, isLoading: loadingOrder } = useMutation({
@@ -36,6 +36,8 @@ const BookDetail = () => {
 
 	if (isLoading) return <Loading />;
 	const res = data.data;
+
+	console.log(res);
 
 	const handleOrder = () => {
 		if (orderValue.quantity <= 0) {
@@ -127,9 +129,15 @@ const BookDetail = () => {
 					</figure>
 					<div className='mt-4'>{res.des}</div>
 				</div>
-				<Evaluate />
-				<BookReviewComment />
-				<Comments />
+				<Evaluate
+					setSelectStar={setSelectStar}
+					selectStar={selectStar}
+					bookId={res.id}
+				/>
+				<Comments
+					datas={res}
+					selectStar={selectStar}
+				/>
 			</div>
 			{showBackDrop && !open && (
 				<DialogBookOrder

@@ -1,6 +1,7 @@
 import { BookOrders } from '@/components';
 import DialogConfirm from '@/components/DialogConfirm';
 import Loading from '@/components/Loading';
+import HeadTitle from '@/hooks/Head';
 import { deleteOrdersByName, getOrdersByName } from '@/infrastructure/dashboardActions';
 import { getToast } from '@/utils/CustomToast';
 import { Button } from '@mui/material';
@@ -8,6 +9,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import React, { useState } from 'react';
 
 const LaterView = () => {
+	HeadTitle('Orders');
 	const queryClient = useQueryClient();
 	const [open, setOpen] = useState(false);
 	const name = localStorage.getItem('name') ? JSON.parse(localStorage.getItem('name')) : [];
@@ -56,7 +58,6 @@ const LaterView = () => {
 	if (isLoading && !!name) return <Loading />;
 	const datas = !!name ? data.data : [];
 
-	console.log(!datas, !!name);
 	if (!datas && !!name) {
 		localStorage.removeItem('name');
 	}

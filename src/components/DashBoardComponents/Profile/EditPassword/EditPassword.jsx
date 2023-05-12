@@ -1,7 +1,7 @@
 import { EyeInvisibleOutlined, EyeOutlined } from '@ant-design/icons';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useMutation } from '@tanstack/react-query';
-import React, { useMemo, useState } from 'react';
+import React, { useContext, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Form } from 'react-router-dom';
 
@@ -11,6 +11,7 @@ import { schemaFormEditPassword } from '@/constants/SchemaYups';
 import { initialFormEditPassword } from '@/constants/initiallValues';
 import { updatePassword } from '@/infrastructure/dashboardActions';
 import { getToast } from '@/utils/CustomToast';
+import { AuthContext } from '@/context/AuthProvider';
 
 const EditPassword = () => {
 	const [visiblePassword, setVisiblePassword] = useState({
@@ -18,11 +19,12 @@ const EditPassword = () => {
 		'password': false,
 		'verifyPassword': false,
 	});
+	const { user } = useContext(AuthContext);
 
 	const { mutate, isLoading } = useMutation({
 		mutationFn: (formData) => {
 			const res = updatePassword({
-				email: 'aa@gmail.com', //fix
+				email: user.email, 
 				oldPassword: formData.oldPassword,
 				password: formData.password,
 			});

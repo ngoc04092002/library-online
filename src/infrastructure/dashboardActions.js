@@ -20,8 +20,8 @@ export const deleteIds = (path, ids) => {
 	return http.post(path, ids);
 };
 
-export const getAllBooks = () => {
-	return http.get('books');
+export const getAllBooks = (params) => {
+	return http.get('books', { params });
 };
 
 export const getBookById = (id) => {

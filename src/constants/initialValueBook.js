@@ -1,4 +1,4 @@
-export const currencies = [
+export const types = [
 	'Novel',
 	'Self-help',
 	'Science ',
