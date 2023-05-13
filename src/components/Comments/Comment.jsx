@@ -39,19 +39,20 @@ const Comment = ({ data, setReviews }) => {
 		<div className='flex items-center mt-4'>
 			<div className='w-10 h-10'>
 				<img
-					src={getImage('user.png')}
+					src={data?.clientEntity?.avatar || getImage('user.png')}
 					alt=''
-					className='w-full'
+					className='w-full h-full object-cover rounded-[50%]'
 				/>
 			</div>
 			<div className='ml-2 w-fit'>
-				<p
+				<div
 					className={`w-fit p-2 text-[15px] mx-2  rounded-md ${
 						isOwner ? 'bg-main text-white' : 'bg-[#f7f8f9]'
 					}`}
 				>
-					{data.des}
-				</p>
+					<p className='text-sm font-bold'>{data?.clientEntity?.username}</p>
+					<p>{data.des}</p>
+				</div>
 				<div className='flex items-center'>
 					<p className='mx-2 text-sm font-bold'>{getTimeAgo(data.createdAt)}</p>
 					{isOwner && (

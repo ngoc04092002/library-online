@@ -6,19 +6,19 @@ import { BackDropContext } from '@/pages/Home';
 const listField = [
 	{
 		label: 'quantity',
-		placeholder: 'enter quantity',
+		placeholder: 'Nhập số lượng',
 	},
 	{
 		label: 'name',
-		placeholder: 'enter name',
+		placeholder: 'Nhập tên',
 	},
 	{
 		label: 'address',
-		placeholder: 'enter address',
+		placeholder: 'Nhập địa chỉ',
 	},
 	{
 		label: 'tel',
-		placeholder: 'enter tel',
+		placeholder: 'Nhập số điện thoại',
 	},
 ];
 

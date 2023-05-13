@@ -7,22 +7,26 @@ dayjs.extend(relativeTime); // Sử dụng plugin relativeTime để sử dụng
 
 export function getTimeAgo(createdAt) {
 	const date = dayjs(createdAt);
-	const day = Math.ceil(dayjs().diff(date, 'day', true)); // Tính số ngày chênh lệch giữa hai ngày
-	const month = Math.ceil(dayjs().diff(date, 'month', true)); // Tính số ngày chênh lệch giữa hai ngày
-	const year = Math.ceil(dayjs().diff(date, 'year', true)); // Tính số ngày chênh lệch giữa hai ngày
-	const hour = Math.ceil(dayjs().diff(date, 'hour', true)); // Tính số ngày chênh lệch giữa hai ngày
-	const minute = Math.ceil(dayjs().diff(date, 'minute', true)); // Tính số ngày chênh lệch giữa hai ngày
+	const day = Math.ceil(dayjs().diff(date, 'day', true));
+	const month = Math.ceil(dayjs().diff(date, 'month', true));
+	const year = Math.ceil(dayjs().diff(date, 'year', true));
+	const hour = Math.ceil(dayjs().diff(date, 'hour', true));
+	const minute = Math.ceil(dayjs().diff(date, 'minute', true));
+	const second = Math.ceil(dayjs().diff(date, 'second', true));
+	if (second <= 60) {
+		return `${second} giây trước`;
+	}
 	if (minute <= 60) {
-		return `${minute} minute ago`;
+		return `${minute} phút trước`;
 	}
 	if (hour <= 24) {
-		return `${hour} hour ago`;
+		return `${hour} giờ trước`;
 	}
 	if (day <= 31) {
-		return `${day} day ago`;
+		return `${day} ngày trước`;
 	}
 	if (month <= 12) {
-		return `${month} month ago`;
+		return `${month} tháng trước`;
 	}
-	return `${year} year ago`;
+	return `${year} năm trước`;
 }

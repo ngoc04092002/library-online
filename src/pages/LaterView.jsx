@@ -65,7 +65,7 @@ const LaterView = () => {
 	return (
 		<>
 			<div className='py-12 px-10'>
-				<h1 className='text-2xl font-bold text-center mb-10'>Orders</h1>
+				<h1 className='text-2xl font-bold text-center mb-10'>Các đơn đặt</h1>
 				{datas && !!datas.length ? (
 					<Button
 						variant='contained'
@@ -81,7 +81,7 @@ const LaterView = () => {
 						href='/'
 						className='text-blue-600 text-center underline'
 					>
-						Order book
+						Quay lại đặt sách
 					</a>
 				)}
 

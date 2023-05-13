@@ -10,8 +10,8 @@ import { AuthContext } from '@/context/AuthProvider';
 import { getImage } from '@/utils/CustomImagePath';
 
 const menuNavBar = [
-	{ title: 'Later view', to: 'view-later' },
-	{ title: 'Feedback', to: 'feedback' },
+	{ title: 'Xem sau', to: 'view-later' },
+	{ title: 'Phản hồi', to: 'feedback' },
 ];
 
 const Header = ({ handleActive }) => {

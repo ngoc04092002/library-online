@@ -36,7 +36,7 @@ const Evaluate = ({ bookId, selectStar, setSelectStar }) => {
 					</li>
 				))}
 			</ul>
-			<p className='ml-4 opacity-50 text-lg'>Star Rating For the Article</p>
+			<p className='ml-4 opacity-50 text-lg'>Đánh giá sách</p>
 		</div>
 	);
 };

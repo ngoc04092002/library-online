@@ -12,9 +12,13 @@ import Loading from '../Loading/Loading';
 import { getToast } from '@/utils/CustomToast';
 import { initValueBookDetail } from '@/constants/initialValueBook';
 import Evaluate from '../helpers/Evaluate';
+import HeadTitle from '@/hooks/Head';
+import { AuthContext } from '@/context/AuthProvider';
 
 const BookDetail = () => {
+	HeadTitle('Book Detail');
 	const { id } = useParams();
+	const { user } = useContext(AuthContext);
 	const { showBackDrop, toggleBackDrop } = useContext(BackDropContext);
 	const [orderValue, setOrderValue] = useState(initValueBookDetail);
 	const [open, setOpen] = useState(false);
@@ -66,7 +70,7 @@ const BookDetail = () => {
 				const names = new Set(localNames);
 				localStorage.setItem('name', JSON.stringify(Array.from(names)));
 				setOrderValue(initValueBookDetail);
-				getToast('order success', 'success');
+				getToast('Đặt thành công', 'success');
 			},
 		});
 	};
@@ -82,9 +86,18 @@ const BookDetail = () => {
 		setOpen(false);
 		toggleBackDrop();
 	};
+
+	const handleClickOrder = () => {
+		if (!Object.keys(user).length) {
+			getToast('Bạn phải đăng nhập','warn');
+			return;
+		}
+		toggleBackDrop();
+	};
+
 	const handleOpenConfirm = () => {
 		if (Object.values(orderValue).includes('')) {
-			alert('Please enter in full');
+			alert('Vui lòng điền đầy đủ');
 			return;
 		}
 		setOpen(true);
@@ -96,28 +109,28 @@ const BookDetail = () => {
 				<div className='w-full text-end'>
 					<ButtonWrapper
 						isLoading={loadingOrder}
-						onClick={toggleBackDrop}
+						onClick={handleClickOrder}
 					>
-						Order Book
+						Đặt sách
 					</ButtonWrapper>
 				</div>
 				<div>
 					<h1 className='text-2xl font-bold mb-4'>{res.title}</h1>
 					<ul>
 						<li>
-							author: <span>{res.author}</span>
+							Tác giả: <span>{res.author}</span>
 						</li>
 						<li>
-							type: <span>{res.type}</span>
+							Thể loại: <span>{res.type}</span>
 						</li>
 						<li>
-							pages: <span>{res.pages}</span>
+							Số trang: <span>{res.pages}</span>
 						</li>
 						<li>
-							quantity sold: <span>{res.quantitySold}</span>
+							Số lượng bán: <span>{res.quantitySold}</span>
 						</li>
 						<li>
-							release date: <span>{dayjs(res.releaseDate).format('DD-MM-YYYY')}</span>
+							Ngày phát hành: <span>{dayjs(res.releaseDate).format('DD-MM-YYYY')}</span>
 						</li>
 					</ul>
 					<figure>

@@ -50,7 +50,7 @@ const Books = () => {
 		<>
 			<div className='mb-8 flex items-center'>
 				<FormControl className='w-1/4'>
-					<InputLabel id='type'>Type</InputLabel>
+					<InputLabel id='type'>Thể loại</InputLabel>
 					<Select
 						labelId='type'
 						id='type'
@@ -71,7 +71,7 @@ const Books = () => {
 				</FormControl>
 				<TextField
 					id='year'
-					label='year'
+					label='Năm phát hàng'
 					type='number'
 					name='year'
 					value={value['year']}
@@ -82,7 +82,7 @@ const Books = () => {
 					variant='contained'
 					onClick={handleFilter}
 				>
-					Filter
+					Lọc
 				</Button>
 			</div>
 			{!res && <NotFoundItem />}

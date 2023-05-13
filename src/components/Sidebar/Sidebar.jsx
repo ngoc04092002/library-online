@@ -1,5 +1,4 @@
 import {
-	BellOutlined,
 	CheckCircleOutlined,
 	CloseOutlined,
 	DatabaseOutlined,
@@ -50,7 +49,7 @@ const Sidebar = ({ active, handleActive, setActive }) => {
 		{
 			path: '/view-later',
 			Icon: <DatabaseOutlined className={cx('building_icon')} />,
-			text: 'Later view',
+			text: 'Xem sau',
 		},
 	];
 
@@ -64,11 +63,6 @@ const Sidebar = ({ active, handleActive, setActive }) => {
 			path: '/dash-board/profile',
 			Icon: <UserOutlined />,
 			text: 'Thông tin tài khoản',
-		},
-		{
-			path: '/',
-			Icon: <BellOutlined />,
-			text: 'Thông báo',
 		},
 		{
 			path: '/feedback',

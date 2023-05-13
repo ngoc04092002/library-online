@@ -63,3 +63,8 @@ export const updateOrder = (params) => {
 export const deleteOrdersByName = (name) => {
 	return http.post(`delete-order`, name);
 };
+
+export const deleteOrderById = (id) => {
+	return http.delete(`delete-order/${id}`);
+};
+

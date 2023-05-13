@@ -23,10 +23,6 @@ const Profile = () => {
 			value: user?.address || '',
 		},
 		{
-			type: 'Số điện thoại',
-			value: user?.sdt || '',
-		},
-		{
 			type: 'Giới tính',
 			value: user?.gender === 'male' ? 'Name' : 'Nữ',
 		},
@@ -43,7 +39,7 @@ const Profile = () => {
 							<img
 								src={user?.avatar || getImage('user.png')}
 								alt='user'
-								className='w-60 h-60 object-cover object-center mb-6'
+								className='w-60 h-60 rounded-[50%] object-cover object-center mb-6'
 							/>
 						</div>
 					</div>

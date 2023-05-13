@@ -72,15 +72,6 @@ export const dataFormGroupTextEditProfile = [
 		styleLabel: 'w-28',
 		i18Label: 'Địa chỉ',
 	},
-	{
-		id: 'sdt',
-		label: 'sdt',
-		placeholder: '0123456789',
-		styleDiv: 'flex-wrap',
-		type: 'text',
-		styleLabel: 'w-28',
-		i18Label: 'Số điện thoại',
-	},
 ];
 
 export const dataFormGroupEditProfile = [

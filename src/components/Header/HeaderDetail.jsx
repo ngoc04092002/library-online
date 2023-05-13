@@ -1,5 +1,4 @@
 import {
-	BellOutlined,
 	CheckCircleOutlined,
 	HomeOutlined,
 	QuestionCircleOutlined,
@@ -52,12 +51,7 @@ const HeaderDetail = ({ handleUnShow }) => {
 			text: 'Thông tin tài khoản',
 		},
 		{
-			path: '/',
-			Icon: <BellOutlined />,
-			text: 'Thông báo',
-		},
-		{
-			path: '/',
+			path: '/feedback',
 			Icon: <QuestionCircleOutlined />,
 			text: 'Góp ý kiến',
 		},
