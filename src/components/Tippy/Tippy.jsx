@@ -20,7 +20,7 @@ const Tippy = ({ value = '' }) => {
 	const res = data?.data || [];
     console.log(res);
 	return (
-		<div className={`${cx('tippy_container')} absolute bg-white top-[42px] left-0 w-full p-2`}>
+		<div className={`${cx('tippy_container')} absolute bg-white top-[42px] left-0 w-full p-2 tippy`}>
 			{isLoading ? (
 				<Loading />
 			) : !res.length ? (

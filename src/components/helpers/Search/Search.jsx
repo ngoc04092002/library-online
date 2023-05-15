@@ -11,6 +11,22 @@ const Search = () => {
 		setSearch(e.target.value);
 	};
 
+	useEffect(() => {
+		const div = document.querySelector('.tippy');
+		if (!div) {
+			return;
+		}
+		const input = document.querySelector('input') ;
+
+		input.addEventListener('focus', () => {
+			div.style.display = 'block';
+		});
+
+		input.addEventListener('blur', () => {
+			div.style.display = 'none';
+		});
+	}, []);
+
 	return (
 		<div className='flex flex-1 items-center border-[1px] border-solid rounded-md border-[#657786] mx-7 relative'>
 			<input
