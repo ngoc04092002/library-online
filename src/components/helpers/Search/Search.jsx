@@ -19,19 +19,23 @@ const Search = ({isTippy = false}) => {
 		if (!div) {
 			return;
 		}
-		const input = document.querySelector('input') ;
+		function targetElement(e) {
+			const className = e.target.className;
+			if (!className.includes('tippy')) {
+				div.style.display = 'none';
+			}
+		}
+		const input = document.querySelector('input');
+		// const mainBody = document.querySelector('.body-main');
 
 		input.addEventListener('focus', () => {
 			div.style.display = 'block';
 		});
-		
-		window.addEventListener('click', (e) => {
-			const className = e.target.className;
-			console.log(className.includes('tippy'), className);
-			if (!className.includes('tippy')) {
-				div.style.display = 'none';
-			}
-		});
+
+		window.addEventListener('click', targetElement);
+		return () => {
+			window.removeEventListener('click', targetElement);
+		};
 	}, []);
 
 	return (
