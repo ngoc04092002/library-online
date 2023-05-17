@@ -22,20 +22,22 @@ const Search = ({isTippy = false}) => {
 		const input = document.querySelector('input') ;
 
 		input.addEventListener('focus', () => {
-			console.log(div);
 			div.style.display = 'block';
 		});
 		
-		input.addEventListener('blur', () => {
-			console.log(div);
-			div.style.display = 'none';
+		window.addEventListener('click', (e) => {
+			const className = e.target.className;
+			console.log(className.includes('tippy'), className);
+			if (!className.includes('tippy')) {
+				div.style.display = 'none';
+			}
 		});
 	}, []);
 
 	return (
 		<div className='flex flex-1 items-center border-[1px] border-solid rounded-md border-[#657786] mx-7 relative'>
 			<input
-				className='w-full h-9 caret-[#01adba] p-1 rounded-md'
+				className='w-full h-9 caret-[#01adba] p-1 rounded-md tippy-input'
 				type='text'
 				placeholder='Tìm sách ...'
 				value={search}

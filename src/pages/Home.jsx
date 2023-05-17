@@ -62,9 +62,9 @@ const Home = () => {
 			)}
 			{!isDashBoard && <Header handleActive={handleShowMenu} />}
 			<div
-				className={`${!isDashBoard ? 'mt-14' : ''} min-h-[${
-					isDashBoard ? '100vh' : '65vh'
-				}] bg-white`}
+				lassName={`${!isDashBoard ? 'mt-14' : ''} ${
+					isDashBoard ? 'min-h-[100vh]' : 'min-h-[65vh]'
+				} bg-white`}
 			>
 				<BackDropContext.Provider
 					value={{ toggleBackDrop: handleToggleBackDrop, showBackDrop: showBackDrop }}

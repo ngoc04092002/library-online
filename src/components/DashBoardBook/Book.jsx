@@ -236,9 +236,9 @@ const Book = () => {
 								{types.map((option) => (
 									<MenuItem
 										key={option}
-										value={res?.type || option}
+										value={option}
 									>
-										{res?.type || option}
+										{option}
 									</MenuItem>
 								))}
 							</TextField>
