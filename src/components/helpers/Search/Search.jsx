@@ -21,7 +21,7 @@ const Search = ({isTippy = false}) => {
 		}
 		function targetElement(e) {
 			const className = e.target.className;
-			if (!className.includes('tippy')) {
+			if (typeof className === 'string' && !className.includes('tippy')){
 				div.style.display = 'none';
 			}
 		}
