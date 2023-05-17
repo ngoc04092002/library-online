@@ -1,5 +1,5 @@
 import { Button, MenuItem, TextField } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { v4 } from 'uuid';
 
@@ -14,11 +14,13 @@ import { getToast } from '@/utils/CustomToast';
 import { types, initValue, initValueImg } from '@/constants/initialValueBook';
 import { validateFromBook } from '@/utils/ValidateForm';
 import { deleteFirebaseImgPath } from '@/utils/DeleteFirebaseImgPath';
+import { BackDropContext } from '@/pages/Home';
 
 const Book = () => {
 	const queryClient = useQueryClient();
 	const { id } = useParams();
 	const isEdit = Number.isInteger(+id);
+	const { showBackDrop, toggleBackDrop } = useContext(BackDropContext);
 
 	const [avatar, setAvatar] = useState(initValueImg);
 	const [edit, setEdit] = useState(true);
@@ -41,6 +43,7 @@ const Book = () => {
 	};
 
 	const handleClose = () => {
+		toggleBackDrop();
 		setOpen(false);
 	};
 
@@ -53,6 +56,7 @@ const Book = () => {
 
 	const handleSubmit = () => {
 		setOpen(false);
+		toggleBackDrop();
 		const formData = {
 			title: value.title || res?.title,
 			author: value.author || res?.author,
@@ -91,7 +95,7 @@ const Book = () => {
 										}
 									}
 									getToast(`${isEdit ? 'update' : 'create'} successfully`, 'success');
-									if(!isEdit){
+									if (!isEdit) {
 										setValue(initValue);
 										setAvatar(initValueImg);
 									}
@@ -139,13 +143,17 @@ const Book = () => {
 					value.author || res.author,
 					value.title || res.title,
 					avatar.url || res.src,
-					() => setOpen(true),
+					() => {
+						toggleBackDrop();
+						setOpen(true);
+					},
 				);
 			}
 		} else {
-			validateFromBook(value.releaseDate, value.author, value.title, avatar.url, () =>
-				setOpen(true),
-			);
+			validateFromBook(value.releaseDate, value.author, value.title, avatar.url, () => {
+				toggleBackDrop();
+				setOpen(true);
+			});
 		}
 	};
 
@@ -272,11 +280,13 @@ const Book = () => {
 					</Button>
 				</form>
 			</div>
-			<DialogConfirm
-				open={open}
-				handleClose={handleClose}
-				handleAccept={handleSubmit}
-			/>
+			{showBackDrop && (
+				<DialogConfirm
+					open={open}
+					handleClose={handleClose}
+					handleAccept={handleSubmit}
+				/>
+			)}
 		</>
 	);
 };

@@ -49,8 +49,6 @@ const BookDetail = () => {
 			return;
 		}
 		orderValue.books = res;
-		setOpen(false);
-		toggleBackDrop();
 		mutate(orderValue, {
 			onError: (res) => {
 				if (typeof res.response?.data === 'string') {
@@ -69,8 +67,10 @@ const BookDetail = () => {
 				localNames.push(orderValue.name);
 				const names = new Set(localNames);
 				localStorage.setItem('name', JSON.stringify(Array.from(names)));
-				setOrderValue(initValueBookDetail);
 				getToast('Đặt thành công', 'success');
+				setOrderValue(initValueBookDetail);
+				setOpen(false);
+				toggleBackDrop();
 			},
 		});
 	};
@@ -83,15 +83,16 @@ const BookDetail = () => {
 	};
 
 	const handleClose = () => {
-		setOpen(false);
 		toggleBackDrop();
+		setOpen(false);
 	};
 
 	const handleClickOrder = () => {
 		if (!Object.keys(user).length) {
-			getToast('Bạn phải đăng nhập','warn');
+			getToast('Bạn phải đăng nhập', 'warn');
 			return;
 		}
+		setOpen(false);
 		toggleBackDrop();
 	};
 
@@ -159,11 +160,13 @@ const BookDetail = () => {
 					handleChange={changeOrder}
 				/>
 			)}
-			<DialogConfirm
-				open={open}
-				handleClose={handleClose}
-				handleAccept={handleOrder}
-			/>
+			{showBackDrop && (
+				<DialogConfirm
+					open={open}
+					handleClose={handleClose}
+					handleAccept={handleOrder}
+				/>
+			)}
 		</>
 	);
 };

@@ -18,7 +18,7 @@ const Tippy = ({ value = '' }) => {
 		cacheTime: 60 * 1000,
 	});
 	const res = data?.data || [];
-    console.log(res);
+
 	return (
 		<div className={`${cx('tippy_container')} absolute bg-white top-[42px] left-0 w-full p-2 tippy`}>
 			{isLoading ? (

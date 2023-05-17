@@ -1,16 +1,18 @@
 import Loading from '@/components/Loading';
 import { deleteOrderById, getOrders } from '@/infrastructure/dashboardActions';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import './order.scss';
 import DialogConfirm from '@/components/DialogConfirm';
 import ButtonWrapper from '@/components/helpers/ButtonWrapper';
 import { getToast } from '@/utils/CustomToast';
+import { BackDropContext } from '../Home';
 
 const head = ['#', 'Tên sách', 'Tên người đùng', 'Địa chỉ', 'Số lượng'];
 
 const Order = () => {
     const queryClient = useQueryClient();
+	const { toggleBackDrop } = useContext(BackDropContext);
 	const [open, setOpen] = useState(false);
 	const { data, isLoading } = useQuery({
 		queryKey: ['orders'],
@@ -36,18 +38,21 @@ const Order = () => {
 				getToast('', 'network bad');
 			},
 			onSuccess: (r) => {
+				getToast('Thanh toán thanh công', 'success');
                 queryClient.invalidateQueries({ queryKey: ['orders'] });
                 setOpen(false);
-				getToast('Thanh toán thanh công', 'success');
+				toggleBackDrop();
 			},
 		});
 	};
 
 	const handleClose = () => {
 		setOpen(false);
+		toggleBackDrop();
 	};
 
 	const handleConfirm = () => {
+		toggleBackDrop();
 		setOpen(true);
 	};
 

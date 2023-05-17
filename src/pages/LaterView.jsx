@@ -6,19 +6,29 @@ import { deleteOrdersByName, getOrdersByName } from '@/infrastructure/dashboardA
 import { getToast } from '@/utils/CustomToast';
 import { Button } from '@mui/material';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import { BackDropContext } from './Home';
 
 const LaterView = () => {
 	HeadTitle('Orders');
 	const queryClient = useQueryClient();
 	const [open, setOpen] = useState(false);
+	const { showBackDrop, toggleBackDrop } = useContext(BackDropContext);
 	const name = localStorage.getItem('name') ? JSON.parse(localStorage.getItem('name')) : [];
 	const handleClose = () => {
 		setOpen(false);
+		toggleBackDrop();
 	};
 	const handleOpen = () => {
 		setOpen(true);
+		toggleBackDrop();
 	};
+
+	useEffect(() => {
+		if (!showBackDrop) {
+			setOpen(false);
+		}
+	}, [showBackDrop]);
 
 	const { mutate, isLoading: deleteLoading } = useMutation({
 		mutationFn: (data) => {
@@ -51,6 +61,7 @@ const LaterView = () => {
 				localStorage.removeItem('name');
 				queryClient.invalidateQueries({ queryKey: [`orders/${name}`] });
 				getToast('order success', 'success');
+				toggleBackDrop();
 			},
 		});
 	};
@@ -89,11 +100,13 @@ const LaterView = () => {
 					<BookOrders fakeDatas={datas} />
 				</div>
 			</div>
-			<DialogConfirm
-				open={open}
-				handleClose={handleClose}
-				handleAccept={handleDeleteAll}
-			/>
+			{showBackDrop && (
+				<DialogConfirm
+					open={open}
+					handleClose={handleClose}
+					handleAccept={handleDeleteAll}
+				/>
+			)}
 		</>
 	);
 };

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Button, TableRow } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { StyledTableCell } from './TableBooks';
@@ -9,6 +9,7 @@ import { getToast } from '@/utils/CustomToast';
 import Loading from '@/components/Loading/Loading';
 import { deleteObject, ref } from 'firebase/storage';
 import { storage } from '@/pages/firebase';
+import { BackDropContext } from '@/pages/Home';
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
 	'&:nth-of-type(odd)': {
@@ -20,44 +21,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 	},
 }));
 
-const Rows = ({ row }) => {
-	const queryClient = useQueryClient();
-	const [open, setOpen] = useState(false);
-	const handleClose = () => {
-		setOpen(false);
-	};
-	const handleOpen = () => {
-		setOpen(true);
-	};
-
-	const { mutate, isLoading } = useMutation({
-		mutationFn: (id) => {
-			const res = deleteBookById(id);
-			return res;
-		},
-	});
-
-	const handleDelete = () => {
-		setOpen(false);
-		mutate(row.id, {
-			onError: (res) => {
-				getToast('', 'network bad');
-			},
-			onSuccess: (res) => {
-				if (res.data) {
-					let ibe = row.src.indexOf('%2F');
-					let ila = row.src.indexOf('?');
-					let res = row.src.slice(ibe + 3, ila);
-					const desertRef = ref(storage, `images/${res}`);
-					deleteObject(desertRef);
-					getToast('Xóa thành công!', 'success');
-					queryClient.invalidateQueries({ queryKey: ['books'] });
-				} else {
-					getToast('Đã có lỗi!', 'error');
-				}
-			},
-		});
-	};
+const Rows = ({ row, isLoading, handleOpen }) => {
 	return (
 		<>
 			<StyledTableRow key={row.title}>
@@ -114,18 +78,13 @@ const Rows = ({ row }) => {
 						variant='contained'
 						color='error'
 						className='bg-[#d32f2f]'
-						onClick={handleOpen}
+						onClick={() => handleOpen(row)}
 						disabled={isLoading}
 					>
 						{isLoading ? <Loading /> : 'Delete'}
 					</Button>
 				</StyledTableCell>
 			</StyledTableRow>
-			<DialogConfirm
-				open={open}
-				handleClose={handleClose}
-				handleAccept={handleDelete}
-			/>
 		</>
 	);
 };

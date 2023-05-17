@@ -1,28 +1,33 @@
 import * as React from 'react';
 import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogTitle from '@mui/material/DialogTitle';
 
 export default function DialogConfirm({ open = false, handleAccept, handleClose }) {
+	if (!open) {
+		return null;
+	}
 	return (
-		<Dialog
-			open={open}
-			onClose={handleClose}
-			aria-labelledby='alert-dialog-title'
-			aria-describedby='alert-dialog-description'
-			className='!z-[100000]'
-		>
-			<DialogTitle id='alert-dialog-title'>Bạn đã chắc chắn chưa</DialogTitle>
-			<DialogActions>
-				<Button onClick={handleClose}>Hủy</Button>
+		<div className='!z-[100000] bg-white absolute top-[50px] left-[50%] -translate-x-1/2 p-3 rounded-md'>
+			<h1
+				id='alert-dialog-title'
+				className='cursor-default font-bold text-lg mb-4'
+			>
+				Bạn đã chắc chắn chưa
+			</h1>
+			<div className='flex items-center justify-around'>
+				<Button
+					className='cursor-pointer'
+					onClick={handleClose}
+				>
+					Hủy
+				</Button>
 				<Button
 					onClick={handleAccept}
 					autoFocus
+					className='cursor-pointer'
 				>
 					Xác nhận
 				</Button>
-			</DialogActions>
-		</Dialog>
+			</div>
+		</div>
 	);
 }

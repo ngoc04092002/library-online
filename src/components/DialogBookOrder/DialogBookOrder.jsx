@@ -22,7 +22,7 @@ const listField = [
 	},
 ];
 
-const DialogBookOrder = ({ text = 'Order', handleClick, value, handleChange, handleBackDrop }) => {
+const DialogBookOrder = ({ text = 'Order', handleClick, value, handleChange }) => {
 	const { toggleBackDrop } = useContext(BackDropContext);
 	return (
 		<div className='p-3 absolute bg-white w-[400px] z-[10000] top-7 left-1/2 -translate-x-1/2'>
@@ -30,7 +30,7 @@ const DialogBookOrder = ({ text = 'Order', handleClick, value, handleChange, han
 				<li>{text}</li>
 				<li
 					className='cursor-pointer'
-					onClick={handleBackDrop || toggleBackDrop}
+					onClick={toggleBackDrop}
 				>
 					<CloseOutlined className='text-lg' />
 				</li>

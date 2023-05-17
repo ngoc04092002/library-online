@@ -1,16 +1,18 @@
 import { Button } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import DialogBookOrder from '../DialogBookOrder/DialogBookOrder';
 import DialogConfirm from '../DialogConfirm/DialogConfirm';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { updateOrder } from '@/infrastructure/dashboardActions';
 import Loading from '../Loading';
 import { getToast } from '@/utils/CustomToast';
+import { BackDropContext } from '@/pages/Home';
 
 const BookOrder = ({ data }) => {
 	const queryClient = useQueryClient();
 	const [orderValue, setOrderValue] = useState(1);
-	const [showBackDrop, setShowBackDrop] = useState(false);
+	const [del, setDel] = useState(false);
+	const { showBackDrop, toggleBackDrop } = useContext(BackDropContext);
 	const [open, setOpen] = useState(false);
 	const { mutate, isLoading } = useMutation({
 		mutationFn: (data) => {
@@ -19,25 +21,33 @@ const BookOrder = ({ data }) => {
 		},
 	});
 
+	useEffect(()=>{
+		if(!showBackDrop){
+			setOpen(false);
+			setDel(false);
+		}
+	},[showBackDrop]);
+
+
 	if (!data) return;
 	const { books: book, quantity, id } = data;
 
 	const handleOpen = () => {
-		setShowBackDrop(true);
+		window.scrollTo({ top: 0, behavior: 'smooth' });
+		toggleBackDrop();
+		setOpen(false);
+		setDel(true);
 	};
-
-	if (open || showBackDrop) {
-		document.body.style.overflowY = 'hidden';
-	} else {
-		document.body.style.overflowY = 'overlay';
-	}
 
 	const handleClose = () => {
+		toggleBackDrop();
 		setOpen(false);
+		setDel(false);
 	};
-	const handleOpenConfirm = () => {
-		setShowBackDrop(false);
+	const handleOpenConfirm = (e) => {
+		e.stopPropagation();
 		setOpen(true);
+		setDel(false);
 	};
 
 	const changeOrder = (e) => {
@@ -47,8 +57,6 @@ const BookOrder = ({ data }) => {
 	};
 
 	const handleDelete = () => {
-		setOpen(false);
-		setShowBackDrop(false);
 		mutate(
 			{ id, quantity: +orderValue },
 			{
@@ -63,10 +71,15 @@ const BookOrder = ({ data }) => {
 					queryClient.invalidateQueries({ queryKey: [`orders-name`] });
 					queryClient.invalidateQueries({ queryKey: [`orders`] });
 					getToast('order success', 'success');
+					toggleBackDrop();
+					setOpen(false);
 				},
 			},
 		);
 	};
+
+	
+
 	return (
 		<>
 			<div className='flex sm:flex-row flex-col items-center rounded-md overflow-hidden justify-between shadow-006 p-3 mb-4'>
@@ -115,23 +128,24 @@ const BookOrder = ({ data }) => {
 					{isLoading ? <Loading /> : 'Delete'}
 				</Button>
 			</div>
-			{showBackDrop && (
+			{!open && showBackDrop && del && (
 				<div className='inset-0 absolute bg-backdrop'>
 					<DialogBookOrder
 						text='Delete order'
 						value={orderValue}
 						handleChange={changeOrder}
 						handleClick={handleOpenConfirm}
-						handleBackDrop={() => setShowBackDrop(false)}
 					/>
 				</div>
 			)}
 
-			<DialogConfirm
-				open={open}
-				handleClose={handleClose}
-				handleAccept={handleDelete}
-			/>
+			{showBackDrop && !del && (
+				<DialogConfirm
+					open={open}
+					handleClose={handleClose}
+					handleAccept={handleDelete}
+				/>
+			)}
 		</>
 	);
 };
