@@ -101,7 +101,7 @@ const Order = () => {
 									<td className='mt-2'>
 										<ButtonWrapper
 											isLoading={loadingRemove}
-											styles='whitespace-nowrap mr-1 !bg-white border border-solid border-[#0072ff] p-2 text-[#0072ff] hover:!bg-[#0072ff] hover:text-white'
+											styles='whitespace-nowrap mr-1 !bg-white border border-solid border-[#0072ff] p-2 !text-[#0072ff] hover:!bg-[#0072ff] hover:!text-white'
 											onClick={handleConfirm}
 										>
 											Thanh toán

@@ -16,15 +16,8 @@ const footerIntroduce = [
 		intros: ['Về chúng tôi', 'Điều khoản sử dụng', 'Quy chế hoạt động', 'Liên hệ'],
 	},
 	{
-		title: 'Cho thuê nhà đất',
-		intros: [
-			'Cho thuê căn hộ',
-			'Cho thuê mặt bằng',
-			'Cho thuê nhà nguyên căn',
-			'Cho thuê nhà xưởng',
-			'Cho thuê phòng trọ',
-			'Cho thuê văn phòng',
-		],
+		title: 'Quản lý thư viện sách',
+		intros: ['Bán đầy đủ thể loại sách'],
 	},
 	{
 		title: 'Dịch vụ - Quảng cáo',
@@ -32,7 +25,7 @@ const footerIntroduce = [
 	},
 	{
 		title: 'Công cụ tiện ích',
-		intros: ['Phòng trọ gần KCN', 'Phòng trọ gần trường'],
+		intros: ['Dễ tìm kiếm', 'Đọc trực tuyến'],
 	},
 ];
 

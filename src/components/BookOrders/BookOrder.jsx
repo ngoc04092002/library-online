@@ -61,6 +61,7 @@ const BookOrder = ({ data }) => {
 				onSuccess: (r) => {
 					setOrderValue(0);
 					queryClient.invalidateQueries({ queryKey: [`orders-name`] });
+					queryClient.invalidateQueries({ queryKey: [`orders`] });
 					getToast('order success', 'success');
 				},
 			},

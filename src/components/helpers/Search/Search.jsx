@@ -1,9 +1,9 @@
 import Tippy from '@/components/Tippy';
 import { SearchOutlined } from '@ant-design/icons';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDebounce } from 'use-debounce';
 
-const Search = () => {
+const Search = ({isTippy = false}) => {
 	const [search, setSearch] = useState('');
 	const [value] = useDebounce(search, 2500);
 
@@ -13,16 +13,21 @@ const Search = () => {
 
 	useEffect(() => {
 		const div = document.querySelector('.tippy');
+		if(!value){
+			div.style.display = 'none';
+		}
 		if (!div) {
 			return;
 		}
 		const input = document.querySelector('input') ;
 
 		input.addEventListener('focus', () => {
+			console.log(div);
 			div.style.display = 'block';
 		});
-
+		
 		input.addEventListener('blur', () => {
+			console.log(div);
 			div.style.display = 'none';
 		});
 	}, []);
@@ -32,12 +37,12 @@ const Search = () => {
 			<input
 				className='w-full h-9 caret-[#01adba] p-1 rounded-md'
 				type='text'
-				placeholder='Từ khóa, Đường, Quận, Dự án hoặc địa danh ...'
+				placeholder='Tìm sách ...'
 				value={search}
 				onChange={handleChange}
 			/>
 			<SearchOutlined className='text-lg p-1 text-[#657786] cus-shadow' />
-			{!!value && <Tippy value={value} />}
+			{!!isTippy && <Tippy value={value} />}
 		</div>
 	);
 };

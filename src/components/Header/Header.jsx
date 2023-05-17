@@ -41,7 +41,7 @@ const Header = ({ handleActive }) => {
 						/>
 					</Link>
 				</div>
-				<Search />
+				<Search isTippy/>
 
 				<MenuOutlined
 					onClick={handleActive}
