@@ -75,7 +75,7 @@ const LaterView = () => {
 
 	return (
 		<>
-			<div className='py-12 px-10'>
+			<div className='py-20 px-10'>
 				<h1 className='text-2xl font-bold text-center mb-10'>Các đơn đặt</h1>
 				{datas && !!datas.length ? (
 					<Button

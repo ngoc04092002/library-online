@@ -1,13 +1,13 @@
 export const types = [
-	'Novel',
-	'Self-help',
-	'Science ',
-	'Life skills',
-	'History ',
-	'Science fiction',
-	'Religious ',
-	'Autobiography',
-	'Textbook ',
+	'Cuốn tiểu thuyết',
+	'Tự lực',
+	'Khoa học ',
+	'Kỹ năng sống',
+	'Lịch sử ',
+	'Khoa học viễn tưởng',
+	'Tôn giáo ',
+	'Hồi ký',
+	'Sách giáo khoa',
 ];
 export const initValueImg = {
 	url: '',
@@ -28,5 +28,5 @@ export const initValueBookDetail = {
 	name: '',
 	address: '',
 	tel: '',
-	status:true
+	status: true,
 };
