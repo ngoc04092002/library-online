@@ -106,7 +106,7 @@ const BookDetail = () => {
 
 	return (
 		<>
-			<div className='py-12 px-12'>
+			<div className='py-20 px-12'>
 				<div className='w-full text-end'>
 					<ButtonWrapper
 						isLoading={loadingOrder}

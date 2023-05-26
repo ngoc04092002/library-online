@@ -62,7 +62,7 @@ const Home = () => {
 			)}
 			{!isDashBoard && <Header handleActive={handleShowMenu} />}
 			<div
-				lassName={`${!isDashBoard ? 'mt-14' : ''} ${
+				className={`${!isDashBoard ? 'mt-14' : ''} ${
 					isDashBoard ? 'min-h-[100vh]' : 'min-h-[65vh]'
 				} bg-white`}
 			>

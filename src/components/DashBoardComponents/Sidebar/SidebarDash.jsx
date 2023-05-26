@@ -67,6 +67,7 @@ const siderbarData = [
 			{ to: 'admin/feedback-forgot-password', title: 'Ý kiến - Quên MK' },
 			{ to: 'admin/book', title: 'Quản lý sách' },
 			{ to: 'admin/order', title: 'Đơn đặt' },
+			{ to: 'admin/account', title: 'Tài khoản người dùng' },
 		],
 		color: '#505050',
 		role: ['admin'],

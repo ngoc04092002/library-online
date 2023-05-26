@@ -1,14 +1,16 @@
-import { ArrowUpOutlined } from '@ant-design/icons';
+import { ArrowDownOutlined, ArrowUpOutlined } from '@ant-design/icons';
 import classNames from 'classnames/bind';
 import React, { useContext } from 'react';
 import { useLocation } from 'react-router-dom';
 
 import styles from './header-dash.module.scss';
 
-import { ChartRevenueIcon, HomeIcon, HomeRentIcon, MapIcon } from '@/assets/icons';
+import { HomeIcon, HomeRentIcon, MapIcon } from '@/assets/icons';
 import Bar from '@/components/helpers/Bar';
 import { AuthContext } from '@/context/AuthProvider';
 import { getImage } from '@/utils/CustomImagePath';
+import { useQuery } from '@tanstack/react-query';
+import { getBookAndFeedbackReport, getBooksSold } from '@/infrastructure/dashboardActions';
 
 const cx = classNames.bind(styles);
 
@@ -19,38 +21,50 @@ const HeaderDash = ({ classSvg, className, handleToggleShowSidebar }) => {
 	const splitPathname = pathname.split('/');
 	const slicePathName = pathname.split('/').slice(2, splitPathname.length - 1);
 
+	const { data } = useQuery({
+		queryKey: ['get-books_sold-info'],
+		queryFn: () => getBooksSold(),
+		staleTime: 60 * 1000,
+		cacheTime: 2 * 60 * 1000,
+	});
+
+	const { data: dataBF } = useQuery({
+		queryKey: ['get-book-feedback-report'],
+		queryFn: () => getBookAndFeedbackReport(),
+		staleTime: 60 * 1000,
+		cacheTime: 2 * 60 * 1000,
+	});
+	const resBF = dataBF?.data ?? {};
+	console.log(resBF);
+	const res = data?.data || [];
+	const solded = res.reduce((accumulator, currentValue) => accumulator + currentValue.solds, 0);
 	const dataStats = [
 		{
-			title: 'Tỉnh (Thành phố)',
-			sales: '3',
+			title: 'Đã bán',
+			sales: solded,
 			icon: <MapIcon />,
-			developSpeed: '100',
+			developSpeed: '65',
 			color: 'bg-[linear-gradient(87deg,#f5365c,#f56036)!important]',
 			timestamp: 'Kể từ tháng trước',
+			incre: true,
 		},
 		{
-			title: 'Đã cho thuê',
-			sales: '100,000',
+			title: 'Số sách hiện có',
+			sales: resBF?.books?.sales,
 			icon: <HomeRentIcon />,
-			developSpeed: '100',
+			developSpeed: resBF?.books?.developSpeed,
 			color: 'bg-[linear-gradient(87deg,#fb6340,#fbb140)!important]',
 			timestamp: 'Kể từ tháng trước',
+			incre: resBF?.books?.increment,
 		},
 		{
-			title: 'Còn trống',
-			sales: '100,000',
+			title: 'Phản hồi',
+			sales: resBF?.feedbacks?.sales,
 			icon: <HomeIcon className='fill-white' />,
-			developSpeed: '100',
+			developSpeed: resBF?.feedbacks?.developSpeed,
 			color: 'bg-[linear-gradient(87deg,#2dce89,#2dcecc)!important]',
 			timestamp: 'Kể từ tháng trước',
-		},
-		{
-			title: 'Tổng giá tiền',
-			sales: '100,000',
-			icon: <ChartRevenueIcon />,
-			developSpeed: '100',
-			color: 'bg-[linear-gradient(87deg,#5e72e4,#825ee4)!important]',
-			timestamp: 'Kể từ tháng trước',
+			incre: resBF?.feedbacks?.increment,
 		},
 	];
 
@@ -104,9 +118,9 @@ const HeaderDash = ({ classSvg, className, handleToggleShowSidebar }) => {
 						<li className='text-[#dee2e6] text-md font-semibold'>{splitPathname.at(-1)}</li>
 					</ul>
 				</div>
-				<div className={cx('btn-filter')}>Filters</div>
+				{/* <div className={cx('btn-filter')}>Filters</div> */}
 			</div>
-			<div className='grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-6'>
+			<div className='grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6'>
 				{dataStats.map((s, index) => (
 					<div
 						key={index}
@@ -122,8 +136,10 @@ const HeaderDash = ({ classSvg, className, handleToggleShowSidebar }) => {
 							<div className={`${s.color} rounded-[50%] p-3`}>{s.icon}</div>
 						</div>
 						<ul className='flex items-center justify-between'>
-							<li className='text-[#2dce89] flex items-center mr-2'>
-								<ArrowUpOutlined /> {s.developSpeed}%
+							<li
+								className={`${s.incre ? 'text-[#2dce89]' : 'text-red-500'}  flex items-center mr-2`}
+							>
+								{s.incre ? <ArrowUpOutlined /> : <ArrowDownOutlined />} {s.developSpeed}%
 							</li>
 							<li className='text-[#525f7f] overflow-hidden whitespace-nowrap text-ellipsis'>
 								{s.timestamp}

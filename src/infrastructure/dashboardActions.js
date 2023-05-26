@@ -68,3 +68,14 @@ export const deleteOrderById = (id) => {
 	return http.delete(`delete-order/${id}`);
 };
 
+export const updateBooksSold = (requestBody) => {
+	return http.post('update-books_sold', requestBody);
+};
+
+export const getBooksSold = () => {
+	return http.get('get-books_sold-info');
+};
+
+export const getBookAndFeedbackReport = () => {
+	return http.get('get-book-feedback-report');
+};

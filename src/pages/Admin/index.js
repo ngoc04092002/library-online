@@ -1,4 +1,6 @@
 import Admin from './Admin';
 import FeedBackForgotPassword from './FeedBackForgotPassword';
+import Order from './Order';
+import UserAccount from './UserAccount';
 
-export { FeedBackForgotPassword, Admin };
+export { FeedBackForgotPassword, Admin, Order, UserAccount };

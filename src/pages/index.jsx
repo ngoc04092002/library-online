@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { createBrowserRouter, Outlet } from 'react-router-dom';
 
-import { Admin, FeedBackForgotPassword } from './Admin';
+import { Admin, FeedBackForgotPassword, Order, UserAccount } from './Admin';
 import DashBoard from './Dashboard';
 import FeedBack from './FeedBack';
 import ForgotPassword from './ForgotPassword';
@@ -25,7 +25,6 @@ import Loading from '@/components/Loading/Loading';
 import { AuthProvider, ContextWrapper } from '@/context';
 import BookPage from './BookPage';
 import LaterView from './LaterView';
-import Order from './Admin/Order';
 
 const AuthLayout = () => {
 	const [load, setLoad] = useState(true);
@@ -137,6 +136,10 @@ export const routes = createBrowserRouter([
 											{
 												path: 'book/:id?',
 												element: <Book />,
+											},
+											{
+												path: 'account',
+												element: <UserAccount />,
 											},
 										],
 									},
