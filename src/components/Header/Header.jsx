@@ -36,8 +36,8 @@ const Header = ({ handleActive }) => {
 				<div className='navbar_logo w-12 h-12'>
 					<Link to='/'>
 						<img
-							src={getImage('branch.png')}
-							alt='branch store'
+							src={getImage('brand.png')}
+							alt='brand store'
 						/>
 					</Link>
 				</div>

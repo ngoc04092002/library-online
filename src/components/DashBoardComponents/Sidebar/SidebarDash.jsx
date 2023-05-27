@@ -87,8 +87,8 @@ const SidebarDash = ({ showSidebar, handleToggleShowSidebar }) => {
 				<div className='flex items-center lg:justify-between justify-center mb-6'>
 					<Link to='/'>
 						<img
-							src={getImage('branch.png')}
-							alt='branch'
+							src={getImage('brand.png')}
+							alt='brand'
 							className='object-contain object-center w-28 h-16'
 						/>
 					</Link>

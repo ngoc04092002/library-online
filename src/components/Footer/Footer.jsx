@@ -41,8 +41,8 @@ const Footer = () => {
 					>
 						<li>
 							<img
-								src={getImage('branch.png')}
-								alt='branch'
+								src={getImage('brand.png')}
+								alt='brand'
 								className='object-cover object-center w-28 h-20 rounded-2xl'
 							/>
 						</li>
