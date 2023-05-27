@@ -1,6 +1,6 @@
 import { ContactsOutlined, HomeOutlined, LockOutlined, UserOutlined } from '@ant-design/icons';
 import classNames from 'classnames/bind';
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 
 import ListSidebarDash from './ListSidebarDash';
@@ -8,6 +8,7 @@ import styles from './sidebar-dash.module.scss';
 
 import Bar from '@/components/helpers/Bar';
 import { getImage } from '@/utils/CustomImagePath';
+import { AuthContext } from '@/context/AuthProvider';
 
 const cx = classNames.bind(styles);
 
@@ -74,7 +75,8 @@ const siderbarData = [
 	},
 ];
 const SidebarDash = ({ showSidebar, handleToggleShowSidebar }) => {
-	const r = 'admin';
+	const { user } = useContext(AuthContext);
+	const r = user?.role || 'user';
 	return (
 		<nav
 			className={`${cx('sidebar_dash', {

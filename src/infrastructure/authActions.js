@@ -1,35 +1,54 @@
 import http from '@/config/axiosConfig';
 
 export const signUpUser = (payload) => {
-	return http.post('sign-up', payload);
+	const pathname = window.location.pathname;
+	return http.post('sign-up', payload, {
+		params: {
+			pathname,
+		},
+	});
 };
 
 export const signInUser = (payload) => {
-	return http.post('sign-in', payload);
+	const pathname = window.location.pathname;
+	return http.post('sign-in', payload, {
+		params: {
+			pathname,
+		},
+	});
 };
 
 export const signInWithSocial = (payload) => {
-	return http.post('sign-in-social', payload);
+	const pathname = window.location.pathname;
+	return http.post('sign-in-social', payload, {
+		params: {
+			pathname,
+		},
+	});
 };
 
 export const refreshToken = (payload) => {
-	return http.get('refresh-cookie', { params: { token: payload } });
+	const pathname = window.location.pathname;
+	return http.get('refresh-cookie', { params: { token: payload,pathname } });
 };
 
 export const getUserInfo = (payload) => {
+	const pathname = window.location.pathname;
 	return http.get('get-user-info', {
-		params: { access: payload },
+		params: { access: payload,pathname  },
 	});
 };
 
 export const sendMail = (payload) => {
+	const pathname = window.location.pathname;
 	return http.get('forgot-password', {
-		params: { email: payload },
+		params: { email: payload ,pathname },
 	});
 };
 
 export const resetPassword = (payload) => {
+	const pathname = window.location.pathname;
 	return http.get('reset-password', {
-		params: { e: payload },
+		params: { e: payload,pathname  },
 	});
 };

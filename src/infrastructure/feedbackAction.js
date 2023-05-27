@@ -1,5 +1,10 @@
 import http from '@/config/axiosConfig';
 
 export const sendFeedback = (payload) => {
-	return http.post('send-feedback', payload);
+	const pathname = window.location.pathname;
+	return http.post('send-feedback', payload, {
+		params: {
+			pathname,
+		},
+	});
 };

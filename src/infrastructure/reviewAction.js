@@ -1,17 +1,33 @@
 import http from '@/config/axiosConfig';
 
 export const createReview = (requestBody) => {
-	return http.post('save-review', requestBody);
+	const pathname = window.location.pathname;
+	return http.post('save-review', requestBody, {
+		params: {
+			pathname,
+		},
+	});
 };
 
 export const removeReview = (id) => {
-	return http.delete(`remove-review/${id}`);
+	const pathname = window.location.pathname;
+	return http.delete(`remove-review/${id}`, {
+		params: {
+			pathname,
+		},
+	});
 };
 
 export const saveRating = (requestBody) => {
-	return http.post('save-rating', requestBody);
+	const pathname = window.location.pathname;
+	return http.post('save-rating', requestBody, {
+		params: {
+			pathname,
+		},
+	});
 };
 
 export const getRating = (id) => {
-	return http.get('get-rating', { params: { id } });
+	const pathname = window.location.pathname;
+	return http.get('get-rating', { params: { id, pathname } });
 };

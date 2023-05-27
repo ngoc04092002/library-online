@@ -1,89 +1,183 @@
 import http from '@/config/axiosConfig';
 
 export const updatePassword = (payload) => {
-	return http.put('update-password', payload);
+	const pathname = window.location.pathname;
+	return http.put('update-password', payload, {
+		params: {
+			pathname,
+		},
+	});
 };
 
 export const updateProfile = (payload, oldEmail) => {
-	return http.put('update-client-info', payload, { params: { oldEmail } });
+	const pathname = window.location.pathname;
+	return http.put('update-client-info', payload, { params: { pathname, oldEmail } });
 };
 
 export const getAllFeedbacks = () => {
-	return http.get('get-all-feedback');
+	const pathname = window.location.pathname;
+	return http.get('get-all-feedback', {
+		params: {
+			pathname,
+		},
+	});
 };
 
 export const getAllEWaitingRs = () => {
-	return http.get('get-all-ewaitingr');
+	const pathname = window.location.pathname;
+	return http.get('get-all-ewaitingr', {
+		params: {
+			pathname,
+		},
+	});
 };
 
 export const deleteIds = (path, ids) => {
-	return http.post(path, ids);
+	const pathname = window.location.pathname;
+	return http.post(path, ids, {
+		params: {
+			pathname,
+		},
+	});
 };
 
 export const getAllBooks = (params) => {
-	return http.get('books', { params });
+	const pathname = window.location.pathname;
+	return http.get('books', { params: { ...params, pathname } });
 };
 
 export const getBookById = (id) => {
-	return http.get(`book/${id}`);
+	const pathname = window.location.pathname;
+	return http.get(`book/${id}`, {
+		params: {
+			pathname,
+		},
+	});
 };
 
 export const deleteBookById = (id) => {
-	return http.delete(`book/${id}`);
+	const pathname = window.location.pathname;
+	return http.delete(`book/${id}`, {
+		params: {
+			pathname,
+		},
+	});
 };
 
 export const createBook = (requestBody) => {
-	return http.post('add-book', requestBody);
+	const pathname = window.location.pathname;
+	return http.post('add-book', requestBody, {
+		params: {
+			pathname,
+		},
+	});
 };
 
 export const updateBook = (requestBody) => {
-	return http.post('update-book', requestBody);
+	const pathname = window.location.pathname;
+	return http.post('update-book', requestBody, {
+		params: {
+			pathname,
+		},
+	});
 };
 
 export const filterBook = (params) => {
-	return http.get('filter-book', { params });
+	const pathname = window.location.pathname;
+	return http.get('filter-book', { params: { ...params, pathname } });
 };
 
 export const getOrders = () => {
-	return http.get('orders');
+	const pathname = window.location.pathname;
+	return http.get('orders', {
+		params: {
+			pathname,
+		},
+	});
 };
 
 export const getOrdersByName = (params) => {
-	return http.get(`orders-name`, { params });
+	const pathname = window.location.pathname;
+	return http.get(`orders-name`, { params: { ...params, pathname } });
 };
 
 export const createOrder = (requestBody) => {
-	return http.post('add-order', requestBody);
+	const pathname = window.location.pathname;
+	return http.post('add-order', requestBody, {
+		params: {
+			pathname,
+		},
+	});
 };
 
 export const updateOrder = (params) => {
-	return http.put(`update-order?id=${params.id}&quantity=${params.quantity}`);
+	const pathname = window.location.pathname;
+	return http.put(`update-order?id=${params.id}&quantity=${params.quantity}`, {
+		params: {
+			pathname,
+		},
+	});
 };
 
 export const deleteOrdersByName = (name) => {
-	return http.post(`delete-order`, name);
+	const pathname = window.location.pathname;
+	return http.post(`delete-order`, name, {
+		params: {
+			pathname,
+		},
+	});
 };
 
 export const deleteOrderById = (id) => {
-	return http.delete(`delete-order/${id}`);
+	const pathname = window.location.pathname;
+	return http.delete(`delete-order/${id}`, {
+		params: {
+			pathname,
+		},
+	});
 };
 
 export const updateBooksSold = (requestBody) => {
-	return http.post('update-books_sold', requestBody);
+	const pathname = window.location.pathname;
+	return http.post('update-books_sold', requestBody, {
+		params: {
+			pathname,
+		},
+	});
 };
 
 export const getBooksSold = () => {
-	return http.get('get-books_sold-info');
+	const pathname = window.location.pathname;
+	return http.get('get-books_sold-info', {
+		params: {
+			pathname,
+		},
+	});
 };
 
 export const getBookAndFeedbackReport = () => {
-	return http.get('get-book-feedback-report');
+	const pathname = window.location.pathname;
+	return http.get('get-book-feedback-report', {
+		params: {
+			pathname,
+		},
+	});
 };
 
 export const getAllClient = () => {
-	return http.get('getAll-clients');
+	const pathname = window.location.pathname;
+	return http.get('getAll-clients', {
+		params: {
+			pathname,
+		},
+	});
 };
 
 export const deleteClientById = (id) => {
-	return http.delete(`delete-client/${id}`);
+	const pathname = window.location.pathname;
+	return http.delete(`delete-client/${id}`, {
+		params: {
+			pathname,
+		},
+	});
 };

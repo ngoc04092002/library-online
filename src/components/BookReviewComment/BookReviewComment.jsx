@@ -70,7 +70,7 @@ const BookReviewComment = ({ book, setReviews, selectStar }) => {
 	};
 	return (
 		<div className='mt-10'>
-			<h1>Review comments</h1>
+			<h1>Bình luận</h1>
 			<div className='flex items-center mt-6'>
 				<div className='mr-2 h-10 w-10'>
 					<img
