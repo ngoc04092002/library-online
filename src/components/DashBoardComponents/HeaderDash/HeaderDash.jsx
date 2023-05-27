@@ -34,8 +34,8 @@ const HeaderDash = ({ classSvg, className, handleToggleShowSidebar }) => {
 		staleTime: 60 * 1000,
 		cacheTime: 2 * 60 * 1000,
 	});
+	
 	const resBF = dataBF?.data ?? {};
-	console.log(resBF);
 	const res = data?.data || [];
 	const solded = res.reduce((accumulator, currentValue) => accumulator + currentValue.solds, 0);
 	const dataStats = [

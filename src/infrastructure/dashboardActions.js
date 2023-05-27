@@ -79,3 +79,11 @@ export const getBooksSold = () => {
 export const getBookAndFeedbackReport = () => {
 	return http.get('get-book-feedback-report');
 };
+
+export const getAllClient = () => {
+	return http.get('getAll-clients');
+};
+
+export const deleteClientById = (id) => {
+	return http.delete(`delete-client/${id}`);
+};
