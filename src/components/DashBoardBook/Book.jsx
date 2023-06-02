@@ -49,8 +49,8 @@ const Book = () => {
 
 	const { mutate, isLoading: loadingEdit } = useMutation({
 		mutationFn: (data) => {
-			const res = isEdit ? updateBook(data) : createBook(data);
-			return res;
+			const result = isEdit ? updateBook(data, res) : createBook(data);
+			return result;
 		},
 	});
 
@@ -82,6 +82,7 @@ const Book = () => {
 								if (typeof res.response?.data === 'string') {
 									getToast(res.response?.data, 'error');
 								}
+								deleteFirebaseImgPath(url);
 								getToast('', 'network bad');
 							},
 							onSuccess: (r) => {
@@ -94,7 +95,7 @@ const Book = () => {
 											deleteFirebaseImgPath(res?.src);
 										}
 									}
-									getToast(`${isEdit ? 'update' : 'create'} successfully`, 'success');
+									getToast(`${isEdit ? 'Sửa' : 'Tạo'} successfully`, 'success');
 									if (!isEdit) {
 										setValue(initValue);
 										setAvatar(initValueImg);
@@ -109,11 +110,11 @@ const Book = () => {
 						});
 					})
 					.catch((err) => {
-						getToast('error upload', 'warn');
+						getToast('Lỗi tải ảnh', 'warn');
 					});
 			})
 			.catch((err) => {
-				getToast('error upload', 'warn');
+				getToast('Lỗi tải ảnh', 'warn');
 			});
 	};
 
@@ -132,6 +133,9 @@ const Book = () => {
 
 	if (isLoading && isEdit) return <Loading />;
 	const res = data?.data;
+
+	console.log(res, value);
+	console.log('type==>', value.type || res?.type);
 
 	const handleClickEdit = (e) => {
 		e.preventDefault();
@@ -229,7 +233,7 @@ const Book = () => {
 								label='Thể loại'
 								name='type'
 								onChange={handleChangeValue}
-								value={value.type || (res ? res?.type : '')}
+								value={value.type || res?.type}
 								className='w-1/2'
 								defaultValue=''
 							>

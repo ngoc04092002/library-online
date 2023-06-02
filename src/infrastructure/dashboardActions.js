@@ -73,13 +73,17 @@ export const createBook = (requestBody) => {
 	});
 };
 
-export const updateBook = (requestBody) => {
+export const updateBook = (requestBody, res) => {
 	const pathname = window.location.pathname;
-	return http.post('update-book', requestBody, {
-		params: {
-			pathname,
+	return http.post(
+		'update-book',
+		{ ...requestBody, oldTitle: res.title, oldAuthor: res.author },
+		{
+			params: {
+				pathname,
+			},
 		},
-	});
+	);
 };
 
 export const filterBook = (params) => {

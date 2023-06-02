@@ -42,11 +42,14 @@ const Order = () => {
 		const d = new Date();
 		const month = d.getMonth() + 1;
 		const year = d.getFullYear();
+
 		const formPaid = {
+			bookId: order[0].books.id,
 			month,
 			year,
 			solds: order[0].quantity,
 		};
+		console.log(formPaid);
 		mutatePaid(formPaid, {
 			onError: (res) => {
 				if (typeof res.response?.data === 'string') {
@@ -55,21 +58,21 @@ const Order = () => {
 				getToast('', 'network bad');
 			},
 			onSuccess: (r) => {
+				mutate(id, {
+					onError: (res) => {
+						if (typeof res.response?.data === 'string') {
+							getToast(res.response?.data, 'error');
+						}
+						getToast('', 'network bad');
+					},
+					onSuccess: (r) => {
+						getToast('Thanh toán thanh công', 'success');
+						queryClient.invalidateQueries({ queryKey: ['orders'] });
+						setOpen(false);
+						toggleBackDrop();
+					},
+				});
 				queryClient.invalidateQueries({ queryKey: ['get-books_sold-info'] });
-			},
-		});
-		mutate(id, {
-			onError: (res) => {
-				if (typeof res.response?.data === 'string') {
-					getToast(res.response?.data, 'error');
-				}
-				getToast('', 'network bad');
-			},
-			onSuccess: (r) => {
-				getToast('Thanh toán thanh công', 'success');
-				queryClient.invalidateQueries({ queryKey: ['orders'] });
-				setOpen(false);
-				toggleBackDrop();
 			},
 		});
 	};
@@ -117,31 +120,31 @@ const Order = () => {
 						{res &&
 							!!res.length &&
 							res.map((r) => (
-									<tr key={r.id}>
-										<td style={{ wordBreak: 'break-word', maxWidth: '22%' }}>
-											<a
-												href={`/book/${r.books.id}`}
-												style={{ whiteSpace: 'nowrap' }}
-												className='hover:color-main'
-											>
-												Tới xem
-											</a>
-										</td>
+								<tr key={r.id}>
+									<td style={{ wordBreak: 'break-word', maxWidth: '22%' }}>
+										<a
+											href={`/book/${r.books.id}`}
+											style={{ whiteSpace: 'nowrap' }}
+											className='hover:color-main'
+										>
+											Tới xem
+										</a>
+									</td>
 
-										<td style={{ wordBreak: 'break-word', maxWidth: '22%' }}>{r.books.title}</td>
-										<td style={{ wordBreak: 'break-word', maxWidth: '22%' }}>{r.name}</td>
-										<td style={{ wordBreak: 'break-word', maxWidth: '22%' }}>{r.address}</td>
-										<td style={{ wordBreak: 'break-word', maxWidth: '22%' }}>{r.quantity}</td>
-										<td className='mt-2'>
-											<ButtonWrapper
-												isLoading={loadingRemove}
-												styles='whitespace-nowrap mr-1 !bg-white border border-solid border-[#0072ff] p-2 !text-[#0072ff] hover:!bg-[#0072ff] hover:!text-white'
-												onClick={() => handleConfirm(r.id)}
-											>
-												Thanh toán
-											</ButtonWrapper>
-										</td>
-									</tr>
+									<td style={{ wordBreak: 'break-word', maxWidth: '22%' }}>{r.books.title}</td>
+									<td style={{ wordBreak: 'break-word', maxWidth: '22%' }}>{r.name}</td>
+									<td style={{ wordBreak: 'break-word', maxWidth: '22%' }}>{r.address}</td>
+									<td style={{ wordBreak: 'break-word', maxWidth: '22%' }}>{r.quantity}</td>
+									<td className='mt-2'>
+										<ButtonWrapper
+											isLoading={loadingRemove}
+											styles='whitespace-nowrap mr-1 !bg-white border border-solid border-[#0072ff] p-2 !text-[#0072ff] hover:!bg-[#0072ff] hover:!text-white'
+											onClick={() => handleConfirm(r.id)}
+										>
+											Thanh toán
+										</ButtonWrapper>
+									</td>
+								</tr>
 							))}
 					</tbody>
 				</table>

@@ -5,18 +5,22 @@ import { BackDropContext } from '@/pages/Home';
 
 const listField = [
 	{
+		type:'number',
 		label: 'quantity',
 		placeholder: 'Nhập số lượng',
 	},
 	{
+		type:'text',
 		label: 'name',
 		placeholder: 'Nhập tên',
 	},
 	{
+		type:'text',
 		label: 'address',
 		placeholder: 'Nhập địa chỉ',
 	},
 	{
+		type:'number',
 		label: 'tel',
 		placeholder: 'Nhập số điện thoại',
 	},
@@ -44,7 +48,7 @@ const DialogBookOrder = ({ text = 'Order', handleClick, value, handleChange }) =
 								key={index}
 								onChange={handleChange}
 								value={value[f.label]}
-								type={index === 0 ? 'number' : 'text'}
+								type={f.type}
 								name={f.label}
 								placeholder={f.placeholder}
 								className='w-full mb-2 border border-solid border-[#ccc]'
