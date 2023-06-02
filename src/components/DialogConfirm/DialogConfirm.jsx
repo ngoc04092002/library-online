@@ -6,7 +6,7 @@ export default function DialogConfirm({ open = false, handleAccept, handleClose 
 		return null;
 	}
 	return (
-		<div className='!z-[100000] bg-white absolute top-[50px] left-[50%] -translate-x-1/2 p-3 rounded-md'>
+		<div className='!z-[100000] bg-white fixed top-[50%] left-[50%] -translate-y-1/2 -translate-x-1/2 p-3 rounded-md'>
 			<h1
 				id='alert-dialog-title'
 				className='cursor-default font-bold text-lg mb-4'

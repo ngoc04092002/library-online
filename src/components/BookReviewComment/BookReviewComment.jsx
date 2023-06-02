@@ -70,7 +70,7 @@ const BookReviewComment = ({ book, setReviews, selectStar }) => {
 	};
 	return (
 		<div className='mt-10'>
-			<h1>Bình luận</h1>
+			<h1>Bình luận đánh giá</h1>
 			<div className='flex items-center mt-6'>
 				<div className='mr-2 h-10 w-10'>
 					<img
@@ -79,21 +79,21 @@ const BookReviewComment = ({ book, setReviews, selectStar }) => {
 						className='w-full'
 					/>
 				</div>
-				<div className='w-fit'>
+				<div className='w-fit flex'>
 					<textarea
 						onInput={resizeTextArea}
 						className='w-[500px] text-[15px] flex-1 mx-2 resize-none bg-[#f7f8f9] h-[40px] min-h-[40px] rounded-md input-none overflow-hidden duration-[0s]'
-						placeholder='enter comment...'
+						placeholder='Đánh giá của bạn...'
 						onChange={handleChange}
 						value={value}
 					/>
 				</div>
 				<ButtonWrapper
 					isLoading={isLoading}
-					styles='mb-0'
+					styles='!mb-0 rounded'
 					onClick={handleClickReview}
 				>
-					Reivew
+					Đánh giá
 				</ButtonWrapper>
 			</div>
 		</div>
