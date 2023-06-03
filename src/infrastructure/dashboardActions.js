@@ -116,11 +116,14 @@ export const createOrder = (requestBody) => {
 
 export const updateOrder = (params) => {
 	const pathname = window.location.pathname;
-	return http.put(`update-order?id=${params.id}&quantity=${params.quantity}`, {
-		params: {
-			pathname,
+	return http.put(
+		`update-order?id=${params.id}&quantity=${params.quantity}&haveAdd=${params.haveAdd}`,
+		{
+			params: {
+				pathname,
+			},
 		},
-	});
+	);
 };
 
 export const deleteOrdersByName = (name) => {
@@ -132,10 +135,11 @@ export const deleteOrdersByName = (name) => {
 	});
 };
 
-export const deleteOrderById = (id) => {
+export const deleteOrderById = (res) => {
 	const pathname = window.location.pathname;
-	return http.delete(`delete-order/${id}`, {
+	return http.delete(`delete-order/${res.id}`, {
 		params: {
+			quantity: res.quantity,
 			pathname,
 		},
 	});

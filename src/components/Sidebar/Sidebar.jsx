@@ -104,12 +104,12 @@ const Sidebar = ({ active, handleActive, setActive }) => {
 						/>
 					</div>
 				</div>
-				<Link
+				<a
 					className='block text-center bg-[#43d2dd36] mx-5 p-2 text-[#0299a5] font-semibold rounded-lg'
-					to='/dash-board/admin/book/add-book'
+					href='/dash-board/admin/book/add-book'
 				>
 					Đăng sách
-				</Link>
+				</a>
 				<div className='flex items-center justify-between px-4 mt-4 bg-[#f7f8f9] p-2 select-none'>
 					<div>
 						<p className='text-xs text-[#657786]'>Nhân viên kỹ thuật</p>
@@ -137,17 +137,17 @@ const Sidebar = ({ active, handleActive, setActive }) => {
 					{!!dataUtiliity &&
 						dataUtiliity.length &&
 						dataUtiliity.map((d, index) => (
-							<Link
+							<a
 								key={index}
 								className='shadow-006 rounded-lg h-20 px-3 pt-3 pb-2 flex flex-col justify-between items-baseline'
-								to={d.path}
+								href={d.path}
 								onClick={handleActive}
 							>
 								<ul className='h-full flex flex-col items-start justify-between'>
 									<li>{d.Icon}</li>
 									<li className='font-semibold'>{d.text}</li>
 								</ul>
-							</Link>
+							</a>
 						))}
 				</div>
 				<ul className={cx('manager_info')}>

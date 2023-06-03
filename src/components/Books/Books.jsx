@@ -26,7 +26,7 @@ const Books = () => {
 		staleTime: 30 * 1000,
 		cacheTime: 60 * 1000,
 	});
-	console.log(value);
+
 	const handleChange = (e) => {
 		setValue((prev) => ({
 			...prev,

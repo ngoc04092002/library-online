@@ -15,8 +15,11 @@ const Evaluate = ({ bookId, selectStar, setSelectStar }) => {
 		staleTime: 60 * 1000,
 		cacheTime: 2 * 60 * 1000,
 	});
-	const res = data?.data || {};
-	const ratingData = Object.values(res);
+	const res = data?.data || [];
+	const stars = new Map();
+	for (let [star, amount] of res) {
+		stars.set(star,amount);
+	}
 
 	return (
 		<div className='flex items-center mt-8'>
@@ -31,7 +34,7 @@ const Evaluate = ({ bookId, selectStar, setSelectStar }) => {
 					>
 						{selectStar >= i + 1 ? <StarFilled className='text-[30px] text-[yellow]' /> : st}
 						<span className='absolute bottom-[-80%] left-[37%] color-main'>
-							{!!ratingData[i] && ratingData[i]}
+							{!!stars.get(i+1) && stars.get(i+1)}
 						</span>
 					</li>
 				))}

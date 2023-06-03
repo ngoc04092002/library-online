@@ -14,6 +14,7 @@ import { initValueBookDetail } from '@/constants/initialValueBook';
 import Evaluate from '../helpers/Evaluate';
 import HeadTitle from '@/hooks/Head';
 import { AuthContext } from '@/context/AuthProvider';
+import { convertToVND } from '@/utils/CustomCurrency';
 
 const BookDetail = () => {
 	HeadTitle('Book Detail');
@@ -40,8 +41,6 @@ const BookDetail = () => {
 
 	if (isLoading) return <Loading />;
 	const res = data.data;
-
-	console.log(res);
 
 	const handleOrder = () => {
 		if (orderValue.quantity <= 0) {
@@ -116,31 +115,38 @@ const BookDetail = () => {
 					</ButtonWrapper>
 				</div>
 				<div>
-					<h1 className='text-2xl font-bold mb-4'>{res.title}</h1>
-					<ul>
-						<li>
-							Tác giả: <span>{res.author}</span>
-						</li>
-						<li>
-							Thể loại: <span>{res.type}</span>
-						</li>
-						<li>
-							Số trang: <span>{res.pages}</span>
-						</li>
-						<li>
-							Số lượng bán: <span>{res.quantitySold}</span>
-						</li>
-						<li>
-							Ngày phát hành: <span>{dayjs(res.releaseDate).format('DD-MM-YYYY')}</span>
-						</li>
-					</ul>
-					<figure>
-						<img
-							src={res.src}
-							alt=''
-							style={{ width: '100%', height: '600px' }}
-						/>
-					</figure>
+					<div className="flex items-center mb-8 border border-solid border-[#e8e8e8] p-4">
+						<figure className='w-[30%]'>
+							<img
+								src={res.src}
+								alt=''
+								style={{ width: '100%', height: '300px' }}
+							/>
+						</figure>
+						<div className='ml-8 w-[70%]'>
+							<h1 className='text-2xl font-bold mb-4 text-[#337ab7]'>{res.title}</h1>
+							<ul>
+								<li className='mb-3'>
+									Tác giả: <span>{res.author}</span>
+								</li>
+								<li className='mb-3'>
+									Thể loại: <span className='text-[#337ab7]'>{res.type}</span>
+								</li>
+								<li className='mb-3'>
+									Số trang: <span>{res.pages}</span>
+								</li>
+								<li className='mb-3'>
+									Số lượng bán: <span>{res.quantitySold}</span>
+								</li>
+								<li className='mb-3'>
+									Giá bán: <span>{convertToVND(res.price)}</span>
+								</li>
+								<li className='mb-3'>
+									Ngày phát hành: <span>{dayjs(res.releaseDate).format('DD-MM-YYYY')}</span>
+								</li>
+							</ul>
+						</div>
+					</div>
 					<div className='mt-4'>{res.des}</div>
 				</div>
 				<Evaluate

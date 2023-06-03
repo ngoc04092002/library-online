@@ -19,7 +19,6 @@ const LineChart = () => {
 
 	const statistical = months.map((m) => {
 		const r = res.filter((r) => r.month === m);
-		console.log(r);
 		if (!!r.length) {
 			return r[0].solds;
 		}

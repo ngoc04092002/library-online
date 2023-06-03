@@ -34,7 +34,7 @@ const HeaderDash = ({ classSvg, className, handleToggleShowSidebar }) => {
 		staleTime: 60 * 1000,
 		cacheTime: 2 * 60 * 1000,
 	});
-	
+
 	const resBF = dataBF?.data ?? {};
 	const res = data?.data || [];
 	const solded = res.reduce((accumulator, currentValue) => accumulator + currentValue.solds, 0);
@@ -120,34 +120,38 @@ const HeaderDash = ({ classSvg, className, handleToggleShowSidebar }) => {
 				</div>
 				{/* <div className={cx('btn-filter')}>Filters</div> */}
 			</div>
-			<div className='grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6'>
-				{dataStats.map((s, index) => (
-					<div
-						key={index}
-						className={`${cx('card-stats')} flex flex-col py-4 px-5 justify-between`}
-					>
-						<div className='flex items-center justify-between mb-6'>
-							<div>
-								<h1 className='uppercase text-sm text-[#8898aa] font-semibold font-[inherit]'>
-									{s.title}
-								</h1>
-								<p className='text-[#32325d] font-semibold text-xl'>{s.sales}</p>
+			{user?.role === 'admin' && (
+				<div className='grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6'>
+					{dataStats.map((s, index) => (
+						<div
+							key={index}
+							className={`${cx('card-stats')} flex flex-col py-4 px-5 justify-between`}
+						>
+							<div className='flex items-center justify-between mb-6'>
+								<div>
+									<h1 className='uppercase text-sm text-[#8898aa] font-semibold font-[inherit]'>
+										{s.title}
+									</h1>
+									<p className='text-[#32325d] font-semibold text-xl'>{s.sales}</p>
+								</div>
+								<div className={`${s.color} rounded-[50%] p-3`}>{s.icon}</div>
 							</div>
-							<div className={`${s.color} rounded-[50%] p-3`}>{s.icon}</div>
+							<ul className='flex items-center justify-between'>
+								<li
+									className={`${
+										s.incre ? 'text-[#2dce89]' : 'text-red-500'
+									}  flex items-center mr-2`}
+								>
+									{s.incre ? <ArrowUpOutlined /> : <ArrowDownOutlined />} {s.developSpeed}%
+								</li>
+								<li className='text-[#525f7f] overflow-hidden whitespace-nowrap text-ellipsis'>
+									{s.timestamp}
+								</li>
+							</ul>
 						</div>
-						<ul className='flex items-center justify-between'>
-							<li
-								className={`${s.incre ? 'text-[#2dce89]' : 'text-red-500'}  flex items-center mr-2`}
-							>
-								{s.incre ? <ArrowUpOutlined /> : <ArrowDownOutlined />} {s.developSpeed}%
-							</li>
-							<li className='text-[#525f7f] overflow-hidden whitespace-nowrap text-ellipsis'>
-								{s.timestamp}
-							</li>
-						</ul>
-					</div>
-				))}
-			</div>
+					))}
+				</div>
+			)}
 		</div>
 	);
 };

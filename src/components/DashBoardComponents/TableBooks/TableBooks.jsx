@@ -29,6 +29,8 @@ export const StyledTableCell = styled(TableCell)(({ theme }) => ({
 	},
 }));
 
+const head = ['Tác giả', 'Thể loại', 'Phát hàng', 'Số trang', 'Giá', 'Đã bán'];
+
 export default function TableBooks() {
 	const navigate = useNavigate();
 	const queryClient = useQueryClient();
@@ -89,7 +91,7 @@ export default function TableBooks() {
 	};
 
 	return (
-		<section className='bg-white w-full p-2'>
+		<section className='bg-white w-full p-2 mb-20'>
 			<Button
 				variant='contained'
 				color='primary'
@@ -98,7 +100,10 @@ export default function TableBooks() {
 			>
 				Add book
 			</Button>
-			<TableContainer component={Paper}>
+			<TableContainer
+				component={Paper}
+				className='h-[600px] overflow-auto'
+			>
 				<Table
 					sx={{ minWidth: 700 }}
 					aria-label='customized table'
@@ -106,36 +111,15 @@ export default function TableBooks() {
 					<TableHead>
 						<TableRow>
 							<StyledTableCell>Tiêu đề</StyledTableCell>
-							<StyledTableCell
-								className='whitespace-nowrap'
-								align='right'
-							>
-								Tác giả
-							</StyledTableCell>
-							<StyledTableCell
-								className='whitespace-nowrap'
-								align='right'
-							>
-								Thể loại
-							</StyledTableCell>
-							<StyledTableCell
-								className='whitespace-nowrap'
-								align='right'
-							>
-								Ngày phát hàng
-							</StyledTableCell>
-							<StyledTableCell
-								className='whitespace-nowrap'
-								align='right'
-							>
-								Số trang
-							</StyledTableCell>
-							<StyledTableCell
-								className='whitespace-nowrap'
-								align='right'
-							>
-								Số lượng đã bán
-							</StyledTableCell>
+							{head.map((h) => (
+								<StyledTableCell
+									key={h}
+									className='whitespace-nowrap'
+									align='left'
+								>
+									{h}
+								</StyledTableCell>
+							))}
 							<StyledTableCell align='center'>Hành động</StyledTableCell>
 						</TableRow>
 					</TableHead>

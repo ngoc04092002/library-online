@@ -61,7 +61,7 @@ const DialogBookOrder = ({ text = 'Order', handleClick, value, handleChange }) =
 						value={value}
 						type='number'
 						name='quantity'
-						placeholder='enter quantity'
+						placeholder='Nhập số lượng'
 						className='w-full border border-solid border-[#ccc]'
 					/>
 				)}

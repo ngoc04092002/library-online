@@ -24,7 +24,7 @@ const siderbarData = [
 		),
 		child: [],
 		color: '#c310c3',
-		role: ['user', 'admin'],
+		role: ['admin'],
 	},
 	{
 		path: '/dash-board/profile',

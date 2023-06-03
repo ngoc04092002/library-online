@@ -7,9 +7,11 @@ import { updateOrder } from '@/infrastructure/dashboardActions';
 import Loading from '../Loading';
 import { getToast } from '@/utils/CustomToast';
 import { BackDropContext } from '@/pages/Home';
+import { convertToVND } from '@/utils/CustomCurrency';
 
 const BookOrder = ({ data }) => {
 	const queryClient = useQueryClient();
+	const [haveAdd, setHaveAdd] = useState(false);
 	const [orderValue, setOrderValue] = useState(1);
 	const [del, setDel] = useState(false);
 	const { showBackDrop, toggleBackDrop } = useContext(BackDropContext);
@@ -21,22 +23,22 @@ const BookOrder = ({ data }) => {
 		},
 	});
 
-	useEffect(()=>{
-		if(!showBackDrop){
+	useEffect(() => {
+		if (!showBackDrop) {
 			setOpen(false);
 			setDel(false);
 		}
-	},[showBackDrop]);
-
+	}, [showBackDrop]);
 
 	if (!data) return;
 	const { books: book, quantity, id } = data;
 
-	const handleOpen = () => {
+	const handleOpen = (isAdd) => {
 		window.scrollTo({ top: 0, behavior: 'smooth' });
+		setHaveAdd(() => isAdd);
+		setOpen(() => false);
+		setDel(() => true);
 		toggleBackDrop();
-		setOpen(false);
-		setDel(true);
 	};
 
 	const handleClose = () => {
@@ -51,14 +53,15 @@ const BookOrder = ({ data }) => {
 	};
 
 	const changeOrder = (e) => {
-		if (+e.target.value <= quantity) {
-			setOrderValue(e.target.value);
+		if ((!haveAdd && +quantity - +e.target.value < 0) || +e.target.value < 0) {
+			return;
 		}
+		setOrderValue(e.target.value);
 	};
 
 	const handleDelete = () => {
 		mutate(
-			{ id, quantity: +orderValue },
+			{ id, quantity: +orderValue, haveAdd },
 			{
 				onError: (res) => {
 					if (typeof res.response?.data === 'string') {
@@ -70,15 +73,13 @@ const BookOrder = ({ data }) => {
 					setOrderValue(0);
 					queryClient.invalidateQueries({ queryKey: [`orders-name`] });
 					queryClient.invalidateQueries({ queryKey: [`orders`] });
-					getToast('order success', 'success');
+					getToast(`${haveAdd ? 'Thêm':'Hủy'} thành công`, 'success');
 					toggleBackDrop();
 					setOpen(false);
 				},
 			},
 		);
 	};
-
-	
 
 	return (
 		<>
@@ -98,40 +99,54 @@ const BookOrder = ({ data }) => {
 						<h1 className='text-lg font-bold mb-4 break-all'>{book.title}</h1>
 						<ul>
 							<li>
-								author: <span>{book.author}</span>
+								Tác giá: <span>{book.author}</span>
 							</li>
 							<li>
-								type: <span>{book.type}</span>
+								Thể loại: <span>{book.type}</span>
 							</li>
 							<li>
-								pages: <span>{book.pages}</span>
+								Số trang: <span>{book.pages}</span>
 							</li>
 							<li>
-								release date: <span>{book.releaseDate}</span>
+								Ngày phát hành: <span>{book.releaseDate}</span>
 							</li>
 							<li>
-								quantity sold: <span>{book.quantitySold}</span>
+								Số lượng bán: <span>{book.quantitySold}</span>
 							</li>
 							<li>
-								order quantity: <span className='color-main'>{quantity}</span>
+								Giá bán: <span>{convertToVND(book.price)}</span>
+							</li>
+							<li>
+								Số lượng đã đặt: <span className='color-main'>{quantity}</span>
 							</li>
 						</ul>
 					</div>
 				</a>
-				<Button
-					variant='contained'
-					color='primary'
-					className='mr-2 sm:!mt-0 !mt-4 sm:!w-fit !w-full bg-[#1976d2]'
-					onClick={handleOpen}
-					disabled={isLoading}
-				>
-					{isLoading ? <Loading /> : 'Delete'}
-				</Button>
+				<div className='flex flex-col items-center'>
+					<Button
+						variant='contained'
+						color='primary'
+						className='mr-2 whitespace-nowrap !mb-4 sm:!mt-0 !mt-4 sm:!w-fit !w-full !bg-[#f03c3c]'
+						onClick={() => handleOpen(false)}
+						disabled={isLoading}
+					>
+						{isLoading ? <Loading /> : 'Hủy đặt'}
+					</Button>
+					<Button
+						variant='contained'
+						color='primary'
+						className='mr-2 sm:!mt-0 !mt-4 sm:!w-fit !w-full bg-[#1976d2]'
+						onClick={() => handleOpen(true)}
+						disabled={isLoading}
+					>
+						{isLoading ? <Loading /> : 'Thêm'}
+					</Button>
+				</div>
 			</div>
 			{!open && showBackDrop && del && (
 				<div className='inset-0 absolute bg-backdrop'>
 					<DialogBookOrder
-						text='Delete order'
+						text={haveAdd ? 'Thêm số lượng' : 'Hủy số lượng'}
 						value={orderValue}
 						handleChange={changeOrder}
 						handleClick={handleOpenConfirm}

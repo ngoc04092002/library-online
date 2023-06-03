@@ -7,7 +7,7 @@ import {
 import classNames from 'classnames/bind';
 import { getAuth, signOut } from 'firebase/auth';
 import React, { useContext } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import styles from './header.module.scss';
 
@@ -94,10 +94,10 @@ const HeaderDetail = ({ handleUnShow }) => {
 							key={index}
 							onClick={handleUnShow}
 						>
-							<Link to={d.path}>
+							<a href={d.path}>
 								{d.Icon}
 								<span>{d.text}</span>
-							</Link>
+							</a>
 						</li>
 					))}
 			</ul>

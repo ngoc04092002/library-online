@@ -1,15 +1,8 @@
-import React, { useContext, useState } from 'react';
+import React from 'react';
 import { Button, TableRow } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { StyledTableCell } from './TableBooks';
-import DialogConfirm from '@/components/DialogConfirm/DialogConfirm';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { deleteBookById } from '@/infrastructure/dashboardActions';
-import { getToast } from '@/utils/CustomToast';
 import Loading from '@/components/Loading/Loading';
-import { deleteObject, ref } from 'firebase/storage';
-import { storage } from '@/pages/firebase';
-import { BackDropContext } from '@/pages/Home';
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
 	'&:nth-of-type(odd)': {
@@ -33,31 +26,37 @@ const Rows = ({ row, isLoading, handleOpen }) => {
 				</StyledTableCell>
 				<StyledTableCell
 					className='whitespace-nowrap'
-					align='right'
+					align='left'
 				>
 					{row.author}
 				</StyledTableCell>
 				<StyledTableCell
 					className='whitespace-nowrap'
-					align='right'
+					align='left'
 				>
 					{row.type}
 				</StyledTableCell>
 				<StyledTableCell
 					className='whitespace-nowrap'
-					align='right'
+					align='left'
 				>
 					{row.releaseDate}
 				</StyledTableCell>
 				<StyledTableCell
 					className='whitespace-nowrap'
-					align='right'
+					align='left'
 				>
 					{row.pages}
 				</StyledTableCell>
 				<StyledTableCell
 					className='whitespace-nowrap'
-					align='right'
+					align='left'
+				>
+					{row.price}
+				</StyledTableCell>
+				<StyledTableCell
+					className='whitespace-nowrap'
+					align='left'
 				>
 					{row.quantitySold}
 				</StyledTableCell>

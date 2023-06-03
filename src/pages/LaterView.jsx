@@ -60,7 +60,7 @@ const LaterView = () => {
 				}
 				localStorage.removeItem('name');
 				queryClient.invalidateQueries({ queryKey: [`orders/${name}`] });
-				getToast('order success', 'success');
+				getToast('Xóa thành công', 'success');
 				toggleBackDrop();
 			},
 		});
@@ -81,11 +81,11 @@ const LaterView = () => {
 					<Button
 						variant='contained'
 						color='primary'
-						className='mr-2 bg-[#1976d2]'
+						className='mr-2 !bg-[#f03c3c] !mb-4'
 						onClick={handleOpen}
 						disabled={deleteLoading}
 					>
-						{deleteLoading ? <Loading /> : 'Delete All'}
+						{deleteLoading ? <Loading /> : 'Hủy tất cả'}
 					</Button>
 				) : (
 					<a

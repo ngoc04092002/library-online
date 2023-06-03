@@ -1,6 +1,6 @@
 export const types = [
 	'Cuốn tiểu thuyết',
-	'Tự lực',
+	'Y Học',
 	'Khoa học ',
 	'Kỹ năng sống',
 	'Lịch sử ',
@@ -21,6 +21,7 @@ export const initValue = {
 	pages: '',
 	type: '',
 	quantitySold: 0,
+	price: 0,
 };
 
 export const initValueBookDetail = {

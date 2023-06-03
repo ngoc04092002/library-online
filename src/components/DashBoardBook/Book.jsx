@@ -64,6 +64,7 @@ const Book = () => {
 			releaseDate: value.releaseDate || res?.releaseDate,
 			pages: value.pages || res?.pages,
 			type: value.type || res?.type,
+			price: value.price || res?.price,
 			quantitySold: 0,
 		};
 		if (isEdit) {
@@ -76,7 +77,6 @@ const Book = () => {
 				getDownloadURL(d.ref)
 					.then((url) => {
 						formData.src = avatar.file ? url : res?.src;
-						console.log(formData);
 						mutate(formData, {
 							onError: (res) => {
 								if (typeof res.response?.data === 'string') {
@@ -95,7 +95,7 @@ const Book = () => {
 											deleteFirebaseImgPath(res?.src);
 										}
 									}
-									getToast(`${isEdit ? 'Sửa' : 'Tạo'} successfully`, 'success');
+									getToast(`${isEdit ? 'Sửa' : 'Tạo'} thành công`, 'success');
 									if (!isEdit) {
 										setValue(initValue);
 										setAvatar(initValueImg);
@@ -133,9 +133,6 @@ const Book = () => {
 
 	if (isLoading && isEdit) return <Loading />;
 	const res = data?.data;
-
-	console.log(res, value);
-	console.log('type==>', value.type || res?.type);
 
 	const handleClickEdit = (e) => {
 		e.preventDefault();
@@ -225,27 +222,40 @@ const Book = () => {
 									className='w-[45%]'
 								/>
 							</div>
-							<TextField
-								disabled={isEdit && edit}
-								id='type'
-								select
-								required
-								label='Thể loại'
-								name='type'
-								onChange={handleChangeValue}
-								value={value.type || res?.type}
-								className='w-1/2'
-								defaultValue=''
-							>
-								{types.map((option) => (
-									<MenuItem
-										key={option}
-										value={option}
-									>
-										{option}
-									</MenuItem>
-								))}
-							</TextField>
+							<div className='my-6 flex justify-between'>
+								<TextField
+									disabled={isEdit && edit}
+									id='type'
+									select
+									required
+									label='Thể loại'
+									name='type'
+									onChange={handleChangeValue}
+									value={value.type || res?.type}
+									className='w-1/2'
+									defaultValue=''
+								>
+									{types.map((option) => (
+										<MenuItem
+											key={option}
+											value={option}
+										>
+											{option}
+										</MenuItem>
+									))}
+								</TextField>
+								<TextField
+										disabled={isEdit && edit}
+										id='price'
+										label='Giá'
+										type='number'
+										name='price'
+										onChange={handleChangeValue}
+										value={value.price || (res ? res?.price : '')}
+										required
+										className='w-[45%]'
+									/>
+							</div>
 						</div>
 						<div className='flex flex-col w-[38%] items-center'>
 							<Button

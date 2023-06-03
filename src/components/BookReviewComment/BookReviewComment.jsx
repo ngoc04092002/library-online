@@ -44,14 +44,17 @@ const BookReviewComment = ({ book, setReviews, selectStar }) => {
 				getToast('', 'network bad');
 			},
 			onSuccess: (r) => {
-				getToast('review successfully', 'success');
+				getToast('Đánh giá thành công', 'success');
 				setValue('');
 				setReviews((prev) => [...prev, r.data]);
 			},
 		});
 
 		const formRating = {
-			bookEntity: book,
+			bookRating: book,
+			clientEntity: {
+				id: user?.id,
+			},
 			star: selectStar
 		}
 

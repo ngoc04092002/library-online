@@ -49,7 +49,6 @@ const Order = () => {
 			year,
 			solds: order[0].quantity,
 		};
-		console.log(formPaid);
 		mutatePaid(formPaid, {
 			onError: (res) => {
 				if (typeof res.response?.data === 'string') {
@@ -58,20 +57,23 @@ const Order = () => {
 				getToast('', 'network bad');
 			},
 			onSuccess: (r) => {
-				mutate(id, {
-					onError: (res) => {
-						if (typeof res.response?.data === 'string') {
-							getToast(res.response?.data, 'error');
-						}
-						getToast('', 'network bad');
+				mutate(
+					{ id, quantity: order[0].quantity },
+					{
+						onError: (res) => {
+							if (typeof res.response?.data === 'string') {
+								getToast(res.response?.data, 'error');
+							}
+							getToast('', 'network bad');
+						},
+						onSuccess: (r) => {
+							getToast('Thanh toán thanh công', 'success');
+							queryClient.invalidateQueries({ queryKey: ['orders'] });
+							setOpen(false);
+							toggleBackDrop();
+						},
 					},
-					onSuccess: (r) => {
-						getToast('Thanh toán thanh công', 'success');
-						queryClient.invalidateQueries({ queryKey: ['orders'] });
-						setOpen(false);
-						toggleBackDrop();
-					},
-				});
+				);
 				queryClient.invalidateQueries({ queryKey: ['get-books_sold-info'] });
 			},
 		});

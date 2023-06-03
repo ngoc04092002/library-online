@@ -26,7 +26,7 @@ const Comment = ({ data, setReviews }) => {
 				getToast('', 'network bad');
 			},
 			onSuccess: (r) => {
-				getToast('Delete success', 'success');
+				getToast('Xóa success', 'success');
 				setReviews((prev) => {
 					const newReview = prev.filter((p) => p.id !== data.id);
 					return newReview;
@@ -61,7 +61,7 @@ const Comment = ({ data, setReviews }) => {
 							onClick={handleDelete}
 						>
 							{' '}
-							Delete
+							Xóa
 						</p>
 					)}
 				</div>
