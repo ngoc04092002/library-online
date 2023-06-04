@@ -30,6 +30,7 @@ const SignUp = () => {
 				address: formData.group_form_address,
 				gender: formData.group_form_male ? 'male' : 'female',
 				password: formData.password1,
+				role:'user'
 			});
 			return res;
 		},

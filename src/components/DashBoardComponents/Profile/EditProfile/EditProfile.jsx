@@ -1,6 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useMutation } from '@tanstack/react-query';
-import { deleteObject, getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import React, { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Form } from 'react-router-dom';
@@ -16,6 +16,7 @@ import { updateProfile } from '@/infrastructure/dashboardActions';
 import { storage } from '@/pages/firebase';
 import { getImage } from '@/utils/CustomImagePath';
 import { getToast } from '@/utils/CustomToast';
+import { deleteFirebaseImgPath } from '@/utils/DeleteFirebaseImgPath';
 
 const EditProfile = () => {
 	const { user, setUser } = useContext(AuthContext);
@@ -60,11 +61,10 @@ const EditProfile = () => {
 						const oldAvatar = user.avatar;
 						if (oldAvatar) {
 							// Delete the old file
-							let ibe = oldAvatar.indexOf('%2F');
-							let ila = oldAvatar.indexOf('?');
-							let res = oldAvatar.slice(ibe + 3, ila);
-							const desertRef = ref(storage, `images/${res}`);
-							deleteObject(desertRef);
+							deleteFirebaseImgPath(oldAvatar);
+						}
+						if (!avatar.file) {
+							deleteFirebaseImgPath(url);
 						}
 						const formData = {
 							username: data.username,
@@ -72,7 +72,7 @@ const EditProfile = () => {
 							address: data.address,
 							sdt: data.sdt,
 							gender: data.male ? 'male' : 'female',
-							avatar: url,
+							avatar: avatar.file ? url : '',
 						};
 						mutate(formData, {
 							onError: (res) => {
