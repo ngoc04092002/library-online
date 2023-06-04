@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import DialogBookOrder from '../DialogBookOrder/DialogBookOrder';
 import DialogConfirm from '../DialogConfirm/DialogConfirm';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { updateOrder } from '@/infrastructure/dashboardActions';
+import { updateOrder, updateStatus } from '@/infrastructure/dashboardActions';
 import Loading from '../Loading';
 import { getToast } from '@/utils/CustomToast';
 import { BackDropContext } from '@/pages/Home';
@@ -11,6 +11,7 @@ import { convertToVND } from '@/utils/CustomCurrency';
 
 const BookOrder = ({ data }) => {
 	const queryClient = useQueryClient();
+	const [indexOrder, setIndexOrder] = useState(false);
 	const [haveAdd, setHaveAdd] = useState(false);
 	const [orderValue, setOrderValue] = useState(1);
 	const [del, setDel] = useState(false);
@@ -19,6 +20,12 @@ const BookOrder = ({ data }) => {
 	const { mutate, isLoading } = useMutation({
 		mutationFn: (data) => {
 			const res = updateOrder(data);
+			return res;
+		},
+	});
+	const { mutate: mutateOrder, isLoading: loadingOrder } = useMutation({
+		mutationFn: (ids) => {
+			const res = updateStatus(1, ids);
 			return res;
 		},
 	});
@@ -52,6 +59,32 @@ const BookOrder = ({ data }) => {
 		setDel(false);
 	};
 
+	const handleOrder = () => {
+		toggleBackDrop();
+		setOpen(true);
+		setDel(false);
+		setIndexOrder(true);
+	};
+
+	const handleConfirmOrder = () => {
+		mutateOrder([id], {
+			onError: (res) => {
+				if (typeof res.response?.data === 'string') {
+					getToast(res.response?.data, 'error');
+				}
+				getToast('', 'network bad');
+			},
+			onSuccess: (r) => {
+				setOrderValue(0);
+				queryClient.invalidateQueries({ queryKey: [`orders-name`] });
+				queryClient.invalidateQueries({ queryKey: [`orders`] });
+				getToast(`Đặt thành công`, 'success');
+				toggleBackDrop();
+				setOpen(false);
+			},
+		});
+	};
+
 	const changeOrder = (e) => {
 		if ((!haveAdd && +quantity - +e.target.value < 0) || +e.target.value < 0) {
 			return;
@@ -73,7 +106,7 @@ const BookOrder = ({ data }) => {
 					setOrderValue(0);
 					queryClient.invalidateQueries({ queryKey: [`orders-name`] });
 					queryClient.invalidateQueries({ queryKey: [`orders`] });
-					getToast(`${haveAdd ? 'Thêm':'Hủy'} thành công`, 'success');
+					getToast(`${haveAdd ? 'Thêm' : 'Hủy'} thành công`, 'success');
 					toggleBackDrop();
 					setOpen(false);
 				},
@@ -126,7 +159,7 @@ const BookOrder = ({ data }) => {
 					<Button
 						variant='contained'
 						color='primary'
-						className='mr-2 whitespace-nowrap !mb-4 sm:!mt-0 !mt-4 sm:!w-fit !w-full !bg-[#f03c3c]'
+						className='mr-2 !min-w-[94px] whitespace-nowrap !mb-4 sm:!mt-0 !mt-4 sm:!w-fit !w-full !bg-[#f03c3c]'
 						onClick={() => handleOpen(false)}
 						disabled={isLoading}
 					>
@@ -135,11 +168,20 @@ const BookOrder = ({ data }) => {
 					<Button
 						variant='contained'
 						color='primary'
-						className='mr-2 sm:!mt-0 !mt-4 sm:!w-fit !w-full bg-[#1976d2]'
+						className='mr-2 !min-w-[94px] sm:!mt-0 !mb-4 !mt-4 sm:!w-fit !w-full bg-[#1976d2]'
 						onClick={() => handleOpen(true)}
 						disabled={isLoading}
 					>
 						{isLoading ? <Loading /> : 'Thêm'}
+					</Button>
+					<Button
+						variant='contained'
+						color='primary'
+						className='mr-2 !min-w-[94px] sm:!mt-0  !mt-4 sm:!w-fit !w-full bg-[#1976d2]'
+						onClick={() => handleOrder(true)}
+						disabled={loadingOrder}
+					>
+						{isLoading ? <Loading /> : 'Đặt'}
 					</Button>
 				</div>
 			</div>
@@ -158,7 +200,7 @@ const BookOrder = ({ data }) => {
 				<DialogConfirm
 					open={open}
 					handleClose={handleClose}
-					handleAccept={handleDelete}
+					handleAccept={indexOrder ? handleConfirmOrder : handleDelete}
 				/>
 			)}
 		</>

@@ -54,6 +54,7 @@ const BookReviewComment = ({ book, setReviews, selectStar }) => {
 			bookRating: book,
 			clientEntity: {
 				id: user?.id,
+				username:user?.username
 			},
 			star: selectStar
 		}

@@ -11,11 +11,6 @@ const listField = [
 	},
 	{
 		type:'text',
-		label: 'name',
-		placeholder: 'Nhập tên',
-	},
-	{
-		type:'text',
 		label: 'address',
 		placeholder: 'Nhập địa chỉ',
 	},
@@ -26,7 +21,7 @@ const listField = [
 	},
 ];
 
-const DialogBookOrder = ({ text = 'Order', handleClick, value, handleChange }) => {
+const DialogBookOrder = ({ text = 'Đặt', handleClick, value, handleChange }) => {
 	const { toggleBackDrop } = useContext(BackDropContext);
 	return (
 		<div className='p-3 absolute bg-white w-[400px] z-[10000] top-7 left-1/2 -translate-x-1/2'>
@@ -41,7 +36,7 @@ const DialogBookOrder = ({ text = 'Order', handleClick, value, handleChange }) =
 			</ul>
 			<div className='mb-3'>
 				{' '}
-				{text === 'Order' ? (
+				{text === 'Đặt' ? (
 					listField.map((f, index) => {
 						return (
 							<input

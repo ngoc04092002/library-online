@@ -114,6 +114,16 @@ export const createOrder = (requestBody) => {
 	});
 };
 
+export const updateStatus = (status,ids) => {
+	const pathname = window.location.pathname;
+	return http.put('update-status', ids, {
+		params: {
+			pathname,
+			status
+		},
+	});
+};
+
 export const updateOrder = (params) => {
 	const pathname = window.location.pathname;
 	return http.put(
@@ -126,9 +136,9 @@ export const updateOrder = (params) => {
 	);
 };
 
-export const deleteOrdersByName = (name) => {
+export const deleteOrdersByIds = (ids) => {
 	const pathname = window.location.pathname;
-	return http.post(`delete-order`, name, {
+	return http.post(`delete-order`, ids, {
 		params: {
 			pathname,
 		},

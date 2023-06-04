@@ -2,7 +2,7 @@ import { BookOrders } from '@/components';
 import DialogConfirm from '@/components/DialogConfirm';
 import Loading from '@/components/Loading';
 import HeadTitle from '@/hooks/Head';
-import { deleteOrdersByName, getOrdersByName } from '@/infrastructure/dashboardActions';
+import { deleteOrdersByIds, getOrdersByName } from '@/infrastructure/dashboardActions';
 import { getToast } from '@/utils/CustomToast';
 import { Button } from '@mui/material';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -32,21 +32,20 @@ const LaterView = () => {
 
 	const { mutate, isLoading: deleteLoading } = useMutation({
 		mutationFn: (data) => {
-			const res = deleteOrdersByName(data);
+			const res = deleteOrdersByIds(data);
 			return res;
 		},
 	});
 	const { data, isLoading } = useQuery({
 		queryKey: ['orders-name', name],
 		queryFn: () => getOrdersByName({ name: name.join(',') }),
-		staleTime: 30 * 1000,
-		cacheTime: 60 * 1000,
 		enabled: !!name,
 	});
 
 	const handleDeleteAll = () => {
+		const ids = data?.data.map(d=>d.id);
 		setOpen(false);
-		mutate(name, {
+		mutate(ids, {
 			onError: (res) => {
 				if (typeof res.response?.data === 'string') {
 					getToast(res.response?.data, 'error');
@@ -58,8 +57,7 @@ const LaterView = () => {
 					getToast('error delete, try again', 'network bad');
 					return;
 				}
-				localStorage.removeItem('name');
-				queryClient.invalidateQueries({ queryKey: [`orders/${name}`] });
+				queryClient.invalidateQueries({ queryKey: [`orders-name`] });
 				getToast('Xóa thành công', 'success');
 				toggleBackDrop();
 			},

@@ -9,8 +9,10 @@ import Books from './Books';
 import BookDetail from './BookDetail';
 import BookOrders from './BookOrders';
 import Pagination from './Pagination';
+import StatusOrder from './StatusOrder';
 
 export {
+	StatusOrder,
 	Pagination,
 	BookOrders,
 	BookDetail,

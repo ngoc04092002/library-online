@@ -44,10 +44,11 @@ const BookDetail = () => {
 
 	const handleOrder = () => {
 		if (orderValue.quantity <= 0) {
-			alert('quantity must be greater than 0');
+			alert('Số lượng phải lớn hơn 0');
 			return;
 		}
 		orderValue.books = res;
+		orderValue.name = user.username;
 		mutate(orderValue, {
 			onError: (res) => {
 				if (typeof res.response?.data === 'string') {
@@ -63,7 +64,7 @@ const BookDetail = () => {
 				const localNames = localStorage.getItem('name')
 					? JSON.parse(localStorage.getItem('name'))
 					: [];
-				localNames.push(orderValue.name);
+				localNames.push(user.username);
 				const names = new Set(localNames);
 				localStorage.setItem('name', JSON.stringify(Array.from(names)));
 				getToast('Đặt thành công', 'success');
@@ -77,7 +78,7 @@ const BookDetail = () => {
 	const changeOrder = (e) => {
 		setOrderValue((prev) => ({
 			...prev,
-			[e.target.name]: e.target.value.trim(),
+			[e.target.name]: e.target.value,
 		}));
 	};
 
@@ -96,6 +97,7 @@ const BookDetail = () => {
 	};
 
 	const handleOpenConfirm = () => {
+		console.log(user, orderValue);
 		if (Object.values(orderValue).includes('')) {
 			alert('Vui lòng điền đầy đủ');
 			return;

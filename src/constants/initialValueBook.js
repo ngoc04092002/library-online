@@ -26,8 +26,7 @@ export const initValue = {
 
 export const initValueBookDetail = {
 	quantity: 1,
-	name: '',
 	address: '',
 	tel: '',
-	status: true,
+	status: 0,
 };

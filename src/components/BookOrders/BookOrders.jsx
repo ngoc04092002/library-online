@@ -2,6 +2,8 @@ import React from 'react';
 import BookOrder from './BookOrder';
 
 const BookOrders = ({ fakeDatas }) => {
+	console.log('data',fakeDatas);
+
 	return (
 		<div>
 			{fakeDatas &&
